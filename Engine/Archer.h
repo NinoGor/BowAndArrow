@@ -17,14 +17,10 @@ private:
 		StandingDown,
 		StandingRight,
 
-	        WalkingUpWithBow,
-	      WalkingLeftWithBow,
-	      WalkingDownWithBow,
-		 WalkingRightWithBow,
-		   StandingUpWithBow,
-		 StandingLeftWithBow,
-	   	 StandingDownWithBow,
-		StandingRightWithBow,
+	    ShootingUp,
+		ShootingLeft,
+		ShootingDown,
+		ShootingRight,
 
 		Count
 	};
@@ -33,6 +29,7 @@ public:
 	void Draw(Graphics& gfx) const;
 	void SetDirection(const Vec2& dir);
 	void Update(float dt);
+	bool isShooting = false;
 private:
 	Surface sprite;
 	Vec2 pos;

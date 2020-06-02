@@ -9,18 +9,14 @@ Archer::Archer(const Vec2& pos)
 	{
 		animations.emplace_back(Animation(64, 64*i, 64, 64, 8, sprite, 0.16f));
 	}
-	for (int i = (int)Sequence::StandingUp; i < (int)Sequence::WalkingUpWithBow; i++)
+	for (int i = (int)Sequence::StandingUp; i < (int)Sequence::ShootingUp; i++)
 	{
 		animations.emplace_back(Animation(0, 64 * (i- (int)Sequence::StandingUp), 64, 64, 1, sprite, 0.16f));
 	}
 
-	for (int i = (int)Sequence::WalkingUpWithBow; i < (int)Sequence::StandingUpWithBow; i++)
+	for (int i = (int)Sequence::ShootingUp; i < (int)Sequence::Count; i++)
 	{
-		animations.emplace_back(Animation(64, 64 * i, 64, 64, 8, sprite, 0.16f));
-	}
-	for (int i = (int)Sequence::StandingUpWithBow; i < (int)Sequence::Count; i++)
-	{
-		animations.emplace_back(Animation(0, 64 * (i - (int)Sequence::StandingUpWithBow), 64, 64, 1, sprite, 0.16f));
+		animations.emplace_back(Animation(0, 64 * i, 64, 64, 9, sprite, 0.16f));
 	}
 }
 
@@ -31,41 +27,41 @@ void Archer::Draw(Graphics& gfx) const
 
 void Archer::SetDirection(const Vec2& dir)
 {
-	if (dir.x > 0.0f)
-	{
-		iCurSequence = Sequence::WalkingRight;
-	}
-	else if (dir.x < 0.0f)
-	{
-		iCurSequence = Sequence::WalkingLeft;
-	}
-	else if (dir.y < 0.0f)
-	{
-		iCurSequence = Sequence::WalkingUp;
-	}
-	else if (dir.y > 0.0f)
-	{
-		iCurSequence = Sequence::WalkingDown;
-	}
-	else
-	{
-		if (vel.x > 0.0f)
+		if (dir.x > 0.0f)
 		{
-			iCurSequence = Sequence::StandingRight;
+			iCurSequence = Sequence::WalkingRight;
 		}
-		else if (vel.x < 0.0f)
+		else if (dir.x < 0.0f)
 		{
-			iCurSequence = Sequence::StandingLeft;
+			iCurSequence = Sequence::WalkingLeft;
 		}
-		else if (vel.y < 0.0f)
+		else if (dir.y < 0.0f)
 		{
-			iCurSequence = Sequence::StandingUp;
+			iCurSequence = Sequence::WalkingUp;
 		}
-		else if (vel.y > 0.0f)
+		else if (dir.y > 0.0f)
 		{
-			iCurSequence = Sequence::StandingDown;
+			iCurSequence = Sequence::WalkingDown;
 		}
-	}
+		else
+		{
+			if (vel.x > 0.0f)
+			{
+				iCurSequence = Sequence::StandingRight;
+			}
+			else if (vel.x < 0.0f)
+			{
+				iCurSequence = Sequence::StandingLeft;
+			}
+			else if (vel.y < 0.0f)
+			{
+				iCurSequence = Sequence::StandingUp;
+			}
+			else if (vel.y > 0.0f)
+			{
+				iCurSequence = Sequence::StandingDown;
+			}
+		}
 	vel = dir*speed;
 }
 
