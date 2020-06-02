@@ -24,6 +24,9 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "Surface.h"
+#include "Animation.h"
+#include "FrameTimer.h"
+#include "Archer.h"
 
 class Game
 {
@@ -43,6 +46,7 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	Surface surf = Surface("Archer.bmp");
+	FrameTimer ft;
+	Archer archer = Archer({100.0f,100.0f});
 	/********************************/
 };
