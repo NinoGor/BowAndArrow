@@ -47,7 +47,7 @@ void Game::UpdateModel()
 	if(archer.isShooting)
 	{
 		counter++;
-		if (counter >= 156)
+		if (counter >= 132)
 		{
 			archer.isShooting = false;
 			counter = 0;

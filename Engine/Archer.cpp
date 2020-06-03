@@ -16,7 +16,7 @@ Archer::Archer(const Vec2& pos)
 
 	for (int i = (int)Sequence::ShootingUp; i < (int)Sequence::Count; i++)
 	{
-		animations.emplace_back(Animation(0, 64 * (i-4), 64, 64, 13, sprite, 0.20f));
+		animations.emplace_back(Animation(0, 64 * (i-4), 64, 64, 11, sprite, 0.20f));
 	}
 }
 
