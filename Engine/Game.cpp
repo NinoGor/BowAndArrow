@@ -38,6 +38,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	float dt = fpst.Mark();
 	if (wnd.kbd.KeyIsPressed(VK_SPACE))
 	{
 		archer.isShooting = true;
@@ -47,7 +48,7 @@ void Game::UpdateModel()
 	if(archer.isShooting)
 	{
 		counter++;
-		if (counter >= 132)
+		if ((float)counter >= 2.2f * (1.0f/dt))
 		{
 			archer.isShooting = false;
 			counter = 0;
