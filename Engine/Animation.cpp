@@ -33,6 +33,7 @@ void Animation::Update(float dt)
 	}
 }
 
+
 void Animation::Advance()
 {
 	if (++iCurFrame >= frames.size())

@@ -13,7 +13,6 @@ public:
 	void Draw(const Vei2& pos, Graphics& gfx) const;
 	void Draw(const Vei2& pos, Graphics& gfx, const RectI& clip) const;
 	void Update(float dt);
-private:
 	void Advance();
 private:
 	Color chroma;
@@ -22,4 +21,5 @@ private:
 	int iCurFrame = 0;
 	float holdTime;
 	float curFrameTime = 0.0f;
+	float curAnimTime = 0.0f;
 };

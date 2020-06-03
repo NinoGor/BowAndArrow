@@ -20,7 +20,6 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
-#include "Keyboard.h"
 
 Game::Game( MainWindow& wnd )
 	:
@@ -42,32 +41,43 @@ void Game::UpdateModel()
 	if (wnd.kbd.KeyIsPressed(VK_SPACE))
 	{
 		archer.isShooting = true;
+		
 	}
-	else
+	
+	if(archer.isShooting)
 	{
-		archer.isShooting = false;
+		counter++;
+		if (counter >= 156)
+		{
+			archer.isShooting = false;
+			counter = 0;
+		}
+		
 	}
-	Vec2 dir = {0.0f,0.0f};
+	
 	if (!archer.isShooting)
 	{
+		archer.dir = { 0.0f,0.0f };
 		if (wnd.kbd.KeyIsPressed(VK_UP))
 		{
-			dir.y -= 1.0f;
+			archer.dir.y -= 1.0f;
 		}
 		if (wnd.kbd.KeyIsPressed(VK_DOWN))
 		{
-			dir.y += 1.0f;
+			archer.dir.y += 1.0f;
 		}
 		if (wnd.kbd.KeyIsPressed(VK_LEFT))
 		{
-			dir.x -= 1.0f;
+			archer.dir.x -= 1.0f;
 		}
 		if (wnd.kbd.KeyIsPressed(VK_RIGHT))
 		{
-			dir.x += 1.0f;
+			archer.dir.x += 1.0f;
 		}
 	}
-	archer.SetDirection(dir);
+	
+	archer.SetDirection();
+	
 	archer.Update(ft.Mark());
 }
 

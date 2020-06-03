@@ -46,6 +46,7 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	int counter = 0;
 	FrameTimer ft;
 	Archer archer = Archer({100.0f,100.0f});
 	/********************************/
