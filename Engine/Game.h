@@ -49,6 +49,7 @@ private:
 	int counter = 0;
 	FrameTimer ft;
 	FrameTimer fpst;
+	FrameTimer ft2;
 	Archer archer = Archer({100.0f,100.0f});
 	/********************************/
 };

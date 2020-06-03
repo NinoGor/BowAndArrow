@@ -20,9 +20,9 @@ Archer::Archer(const Vec2& pos)
 	}
 }
 
+
 void Archer::Draw(Graphics& gfx) const
 {
-
 	if (isShooting)
 	{
 		animations[(int)shooting].Draw((Vei2)pos, gfx);
@@ -57,21 +57,25 @@ void Archer::SetDirection()
 			{
 				iCurSequence = Sequence::StandingRight;
 				shooting = Sequence::ShootingRight;
+				arr1.dir = { 1.0f,0.0f };
 			}
 			else if (vel.x < 0.0f)
 			{
 				iCurSequence = Sequence::StandingLeft;
 				shooting = Sequence::ShootingLeft;
+				arr1.dir = { -1.0f,0.0f };
 			}
 			else if (vel.y < 0.0f)
 			{
 				iCurSequence = Sequence::StandingUp;
 				shooting = Sequence::ShootingUp;
+				arr1.dir = { 0.0f, -1.0f };
 			}
 			else if (vel.y > 0.0f)
 			{
 				iCurSequence = Sequence::StandingDown;
 				shooting = Sequence::ShootingDown;
+				arr1.dir = { 0.0f,1.0f };
 			}
 		}
 		
@@ -83,7 +87,7 @@ void Archer::SetDirection()
 void Archer::Update(float dt)
 {
 	pos += vel * dt;
-	
+
 
 	if (isShooting)
 	{
@@ -93,5 +97,35 @@ void Archer::Update(float dt)
 	{
 		animations[(int)iCurSequence].Update(dt);
 	}
-	
+
 }
+
+void Archer::Shooting(Graphics& gfx, float dt)
+{
+	if (arrowIsBeingShot)
+	{
+		arr1.pos = Vec2(float(pos.x + 32),float (pos.y + 32));
+		arr1.vel = arr1.dir*arr1.speed;
+		arrows.emplace_back(Arrow(arr1));
+		arrowIsBeingShot = false;
+	}
+	for (int i = 0; i < arrows.size(); i++)
+	{
+		arrows[i].pos += arrows[i].vel*dt;
+		arrows[i].Draw(gfx);
+		if (int(arrows[i].pos.x) < 0 || int(arrows[i].pos.x) > gfx.ScreenWidth
+			|| int(arrows[i].pos.y) < 0 || int(arrows[i].pos.y) > gfx.ScreenHeight)
+		{
+			arrows.erase(arrows.begin() + i);
+		}
+
+	}
+}
+
+
+void Archer::Arrow::Draw(Graphics & gfx) const
+{
+	gfx.DrawSprite((int)pos.x, (int)pos.y, ArrowSprite);
+}
+
+

@@ -42,9 +42,9 @@ void Game::UpdateModel()
 	if (wnd.kbd.KeyIsPressed(VK_SPACE))
 	{
 		archer.isShooting = true;
-		
+		archer.arrowIsBeingShot = true;
 	}
-	
+	//archer.arrowIsBeingShot = false;
 	if(archer.isShooting)
 	{
 		counter++;
@@ -76,7 +76,7 @@ void Game::UpdateModel()
 			archer.dir.x += 1.0f;
 		}
 	}
-	
+	archer.Shooting(gfx,ft2.Mark());
 	archer.SetDirection();
 	
 	archer.Update(ft.Mark());

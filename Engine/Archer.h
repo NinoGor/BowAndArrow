@@ -25,11 +25,24 @@ private:
 
 		Count
 	};
+	class Arrow
+	{
+	public:
+		Arrow() = default;
+		void Draw(Graphics& gfx) const;
+		Surface ArrowSprite = "Arrow.bmp";
+		Vec2 pos;
+		Vec2 vel = {0.0f,0.0f};
+		float speed = 80.0f;
+		Vec2 dir = { 0.0f,0.0f };
+	};
 public:
 	Archer(const Vec2& pos);
 	void Draw(Graphics& gfx) const;
 	void SetDirection();
 	void Update(float dt);
+	void Shooting(Graphics& gfx, float dt);
+	bool arrowIsBeingShot = false;
 	bool isShooting = false;
 	Vec2 dir = { 0.0f,0.0f };
 private:
@@ -37,6 +50,8 @@ private:
 	Vec2 pos;
 	Vec2 vel = { 0.0f,0.0f };
 	std::vector<Animation> animations;
+	Arrow arr1;  
+	std::vector<Arrow> arrows;
 	Sequence iCurSequence = Sequence::StandingDown;
 	Sequence shooting = Sequence::ShootingDown;
 	float speed = 80.0f;
