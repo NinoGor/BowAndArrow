@@ -44,14 +44,14 @@ void Game::UpdateModel()
 		archer.isShooting = true;
 		archer.arrowIsBeingShot = true;
 	}
-	//archer.arrowIsBeingShot = false;
+
 	if(archer.isShooting)
 	{
-		counter++;
-		if ((float)counter >= 2.2f * (1.0f/dt))
+		counter+=1.0f;
+		if (counter >= 2.2f * FPS/*(1.0f/dt)*/)
 		{
 			archer.isShooting = false;
-			counter = 0;
+			counter = 0.0f;
 		}
 		
 	}

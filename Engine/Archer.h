@@ -33,8 +33,8 @@ private:
 		Surface ArrowSprite = "Arrow.bmp";
 		Vec2 pos;
 		Vec2 vel = {0.0f,0.0f};
-		float speed = 80.0f;
-		Vec2 dir = { 0.0f,0.0f };
+		float speed = 350.0f;
+		Vec2 dir = { 0.0f,1.0f };
 	};
 public:
 	Archer(const Vec2& pos);

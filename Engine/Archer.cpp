@@ -16,7 +16,7 @@ Archer::Archer(const Vec2& pos)
 
 	for (int i = (int)Sequence::ShootingUp; i < (int)Sequence::Count; i++)
 	{
-		animations.emplace_back(Animation(0, 64 * (i-4), 64, 64, 11, sprite, 0.20f));
+		animations.emplace_back(Animation(0, 64 * (i-4), 64, 65, 11, sprite, 0.20f));
 	}
 }
 
@@ -104,10 +104,13 @@ void Archer::Shooting(Graphics& gfx, float dt)
 {
 	if (arrowIsBeingShot)
 	{
-		arr1.pos = Vec2(float(pos.x + 32),float (pos.y + 32));
-		arr1.vel = arr1.dir*arr1.speed;
-		arrows.emplace_back(Arrow(arr1));
-		arrowIsBeingShot = false;
+		if (!isShooting)
+		{
+			arr1.pos = Vec2(float(pos.x + 32), float(pos.y + 29));
+			arr1.vel = arr1.dir*arr1.speed;
+			arrows.emplace_back(Arrow(arr1));
+			arrowIsBeingShot = false;
+		}
 	}
 	for (int i = 0; i < arrows.size(); i++)
 	{

@@ -46,7 +46,8 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	int counter = 0;
+	float counter = 0.0f;
+	int FPS = 60;
 	FrameTimer ft;
 	FrameTimer fpst;
 	FrameTimer ft2;
