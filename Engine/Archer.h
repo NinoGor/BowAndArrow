@@ -30,7 +30,8 @@ private:
 	public:
 		Arrow() = default;
 		void Draw(Graphics& gfx) const;
-		Surface ArrowSprite = "Arrow.bmp";
+		Surface ArrowSprite = "ArrowH.bmp";
+		Surface ArrowSprite2 = "ArrowV.bmp";
 		Vec2 pos;
 		Vec2 vel = {0.0f,0.0f};
 		float speed = 350.0f;
@@ -41,7 +42,9 @@ public:
 	void Draw(Graphics& gfx) const;
 	void SetDirection();
 	void Update(float dt);
-	void Shooting(Graphics& gfx, float dt);
+	void ClampToRect(const RectI& rect);
+
+	void Shooting(float dt);
 	bool arrowIsBeingShot = false;
 	bool isShooting = false;
 	Vec2 dir = { 0.0f,0.0f };

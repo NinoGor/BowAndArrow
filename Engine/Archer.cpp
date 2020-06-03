@@ -31,6 +31,10 @@ void Archer::Draw(Graphics& gfx) const
 	{
 		animations[(int)iCurSequence].Draw((Vei2)pos, gfx);
 	}
+	for (int i = 0; i < arrows.size(); i++)
+	{
+		arrows[i].Draw(gfx);
+	}
 }
 
 void Archer::SetDirection()
@@ -100,7 +104,28 @@ void Archer::Update(float dt)
 
 }
 
-void Archer::Shooting(Graphics& gfx, float dt)
+void Archer::ClampToRect(const RectI & rect)
+{
+	if (pos.x+20.0f < (float)rect.left)
+	{
+		pos.x = -20.0f;
+	}
+	else if (pos.x+64.0f - 20.0f >= (float)rect.right)
+	{
+		pos.x = float(rect.right) - 64.0f + 20.0f;
+	}
+
+	if (pos.y+10.0f < (float)rect.top)
+	{
+		pos.y= -10.0f;
+	}
+	else if (pos.y+64.0f >= (float)rect.bottom)
+	{
+		pos.y = float(rect.bottom) - 64.0f;
+	}
+}
+
+void Archer::Shooting(float dt)
 {
 	if (arrowIsBeingShot)
 	{
@@ -115,9 +140,8 @@ void Archer::Shooting(Graphics& gfx, float dt)
 	for (int i = 0; i < arrows.size(); i++)
 	{
 		arrows[i].pos += arrows[i].vel*dt;
-		arrows[i].Draw(gfx);
-		if (int(arrows[i].pos.x) < 0 || int(arrows[i].pos.x) > gfx.ScreenWidth
-			|| int(arrows[i].pos.y) < 0 || int(arrows[i].pos.y) > gfx.ScreenHeight)
+		if (int(arrows[i].pos.x) < 0 || int(arrows[i].pos.x) > Graphics::ScreenWidth
+			|| int(arrows[i].pos.y) < 0 || int(arrows[i].pos.y) > Graphics::ScreenHeight)
 		{
 			arrows.erase(arrows.begin() + i);
 		}
@@ -128,7 +152,23 @@ void Archer::Shooting(Graphics& gfx, float dt)
 
 void Archer::Arrow::Draw(Graphics & gfx) const
 {
-	gfx.DrawSprite((int)pos.x, (int)pos.y, ArrowSprite);
+	if (dir.x > 0.0f)
+	{
+		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 0,34,0,9 }, ArrowSprite);
+	}
+	else if (dir.x < 0.0f)
+	{
+		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 34,68,0,9 }, ArrowSprite);
+	}
+	else if (dir.y > 0.0f)
+	{
+		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 0,9,0,34 }, ArrowSprite2);
+	}
+	else if (dir.y < 0.0f)
+	{
+		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 0,9,34,68 }, ArrowSprite2);
+	}
+	
 }
 
 

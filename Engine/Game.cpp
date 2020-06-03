@@ -76,10 +76,15 @@ void Game::UpdateModel()
 			archer.dir.x += 1.0f;
 		}
 	}
-	archer.Shooting(gfx,ft2.Mark());
+	archer.Shooting(ft2.Mark());
 	archer.SetDirection();
-	
+	archer.ClampToRect(RectI{0,(Graphics::ScreenWidth)/3,0,Graphics::ScreenHeight});
 	archer.Update(ft.Mark());
+	for (int i = 0; i < 600; i++)
+	{
+		for(int x =0; x<Graphics::ScreenWidth / 3;x++)
+		gfx.PutPixel(x,i,Colors::Cyan);
+	}
 }
 
 void Game::ComposeFrame()

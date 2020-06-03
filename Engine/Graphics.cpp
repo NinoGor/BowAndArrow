@@ -402,7 +402,7 @@ void Graphics::DrawSprite(int x, int y, RectI srcRect, const RectI& clip, const 
 	{
 		srcRect.bottom -= y + srcRect.GetHeight() - clip.bottom;
 	}
-	for (int sy = srcRect.top; sy < srcRect.bottom; sy++)
+	for (int sy = srcRect.top+1; sy < srcRect.bottom; sy++)
 	{
 		for (int sx = srcRect.left; sx < srcRect.right; sx++)
 		{
