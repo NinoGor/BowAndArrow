@@ -16,25 +16,28 @@ Archer::Archer(const Vec2& pos)
 
 	for (int i = (int)Sequence::ShootingUp; i < (int)Sequence::Count; i++)
 	{
-		animations.emplace_back(Animation(0, 64 * (i-4), 64, 65, 11, sprite, 0.20f));
+		animations.emplace_back(Animation(0, 64 * (i-4), 64, 65, 11, sprite, 0.10f));
 	}
 }
 
 
 void Archer::Draw(Graphics& gfx) const
 {
-	if (isShooting)
-	{
-		animations[(int)shooting].Draw((Vei2)pos, gfx);
-	}
-	else
-	{
-		animations[(int)iCurSequence].Draw((Vei2)pos, gfx);
-	}
 	for (int i = 0; i < arrows.size(); i++)
 	{
 		arrows[i].Draw(gfx);
 	}
+	if (isShooting && !isMoving)
+	{
+		animations[(int)shooting].Draw((Vei2)pos, gfx);
+	}
+
+	else
+	{
+		animations[(int)iCurSequence].Draw((Vei2)pos, gfx);
+
+	}
+	
 }
 
 void Archer::SetDirection()
@@ -93,7 +96,7 @@ void Archer::Update(float dt)
 	pos += vel * dt;
 
 
-	if (isShooting)
+	if (isShooting && !isMoving)
 	{
 			animations[(int)shooting].Update(dt);
 	}
@@ -129,7 +132,7 @@ void Archer::Shooting(float dt)
 {
 	if (arrowIsBeingShot)
 	{
-		if (!isShooting)
+		if (!isShooting && !isMoving)
 		{
 			arr1.pos = Vec2(float(pos.x + 32), float(pos.y + 29));
 			arr1.vel = arr1.dir*arr1.speed;

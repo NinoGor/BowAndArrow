@@ -39,55 +39,66 @@ void Game::Go()
 void Game::UpdateModel()
 {
 	float dt = fpst.Mark();
-	if (wnd.kbd.KeyIsPressed(VK_SPACE))
-	{
-		archer.isShooting = true;
-		archer.arrowIsBeingShot = true;
-	}
-
-	if(archer.isShooting)
-	{
-		counter+=1.0f;
-		if (counter >= 2.2f * FPS/*(1.0f/dt)*/)
-		{
-			archer.isShooting = false;
-			counter = 0.0f;
-		}
-		
-	}
 	
-	if (!archer.isShooting)
+	if (!wnd.kbd.KeyIsPressed(VK_SPACE))
 	{
 		archer.dir = { 0.0f,0.0f };
 		if (wnd.kbd.KeyIsPressed(VK_UP))
 		{
 			archer.dir.y -= 1.0f;
+			archer.isMoving = true;
 		}
-		if (wnd.kbd.KeyIsPressed(VK_DOWN))
+		else if (wnd.kbd.KeyIsPressed(VK_DOWN))
 		{
 			archer.dir.y += 1.0f;
+			archer.isMoving = true;
 		}
-		if (wnd.kbd.KeyIsPressed(VK_LEFT))
+		else if (wnd.kbd.KeyIsPressed(VK_LEFT))
 		{
 			archer.dir.x -= 1.0f;
+			archer.isMoving = true;
 		}
-		if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+		else if (wnd.kbd.KeyIsPressed(VK_RIGHT))
 		{
 			archer.dir.x += 1.0f;
+			archer.isMoving = true;
+		}
+		else
+		{
+			archer.isMoving = false;
 		}
 	}
+	if (wnd.kbd.KeyIsPressed(VK_SPACE))
+	{
+		if (!archer.isMoving)
+		{
+			archer.isShooting = true;
+			archer.arrowIsBeingShot = true;
+		}
+	}
+	if (archer.isShooting)
+	{
+		counter += 1.0f;
+		if (counter >= 1.1f * FPS/*(1.0f/dt)*/)
+		{
+			archer.isShooting = false;
+			counter = 0.0f;
+		}
+	}
+
 	archer.Shooting(ft2.Mark());
 	archer.SetDirection();
 	archer.ClampToRect(RectI{0,(Graphics::ScreenWidth)/3,0,Graphics::ScreenHeight});
 	archer.Update(ft.Mark());
-	for (int i = 0; i < 600; i++)
-	{
-		for(int x =0; x<Graphics::ScreenWidth / 3;x++)
-		gfx.PutPixel(x,i,Colors::Cyan);
-	}
+	
 }
 
 void Game::ComposeFrame()
 {
+	for (int i = 0; i < 600; i++)
+	{
+			gfx.PutPixel(Graphics::ScreenWidth / 3, i, Colors::Cyan);
+	}
 	archer.Draw(gfx);
+	
 }

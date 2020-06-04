@@ -47,6 +47,7 @@ public:
 	void Shooting(float dt);
 	bool arrowIsBeingShot = false;
 	bool isShooting = false;
+	bool isMoving = false;
 	Vec2 dir = { 0.0f,0.0f };
 private:
 	Surface sprite;
