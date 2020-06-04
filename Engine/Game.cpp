@@ -40,7 +40,7 @@ void Game::UpdateModel()
 {
 	float dt = fpst.Mark();
 	
-	if (!wnd.kbd.KeyIsPressed(VK_SPACE))
+	if (!archer.isShooting)
 	{
 		archer.dir = { 0.0f,0.0f };
 		if (wnd.kbd.KeyIsPressed(VK_UP))
@@ -78,11 +78,11 @@ void Game::UpdateModel()
 	}
 	if (archer.isShooting)
 	{
-		counter += 1.0f;
-		if (counter >= 1.1f * FPS/*(1.0f/dt)*/)
+		counter += 1;
+		if (counter >= int(1.1f * FPS)/*(1.0f/dt)*/)
 		{
 			archer.isShooting = false;
-			counter = 0.0f;
+			counter = 1;
 		}
 	}
 
