@@ -27,6 +27,7 @@
 #include "Animation.h"
 #include "FrameTimer.h"
 #include "Archer.h"
+#include "Balloon.h"
 
 class Game
 {
@@ -51,6 +52,9 @@ private:
 	FrameTimer ft;
 	FrameTimer fpst;
 	FrameTimer ft2;
+	FrameTimer b;
 	Archer archer = Archer({100.0f,100.0f});
+	Balloon b1 = Balloon({550.0f,250.0f});
+	std::vector<Balloon> balloons;
 	/********************************/
 };

@@ -136,7 +136,7 @@ void Archer::Shooting(float dt)
 		{
 			arr1.pos = Vec2(float(pos.x + 32), float(pos.y + 29));
 			arr1.vel = arr1.dir*arr1.speed;
-			arrows.emplace_back(Arrow(arr1));
+			arrows.emplace_back(arr1);
 			arrowIsBeingShot = false;
 		}
 	}

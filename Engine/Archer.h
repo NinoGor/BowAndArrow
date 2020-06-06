@@ -2,7 +2,6 @@
 
 #include "Animation.h"
 #include "Vec2.h"
-#include "Keyboard.h"
 
 class Archer
 {
@@ -32,7 +31,7 @@ private:
 		void Draw(Graphics& gfx) const;
 		Surface ArrowSprite = "ArrowH.bmp";
 		Surface ArrowSprite2 = "ArrowV.bmp";
-		Vec2 pos;
+		Vec2 pos = {0.0f,0.0f};
 		Vec2 vel = {0.0f,0.0f};
 		float speed = 350.0f;
 		Vec2 dir = { 0.0f,1.0f };
