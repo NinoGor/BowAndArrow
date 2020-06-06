@@ -16,7 +16,7 @@ Archer::Archer(const Vec2& pos)
 
 	for (int i = (int)Sequence::ShootingUp; i < (int)Sequence::Count; i++)
 	{
-		animations.emplace_back(Animation(0, 64 * (i-4), 64, 65, 11, sprite, 0.10f));
+		animations.emplace_back(Animation(0, 64 * (i-4), 64, 64, 11, sprite, 0.10f));
 	}
 }
 
@@ -95,15 +95,21 @@ void Archer::Update(float dt)
 {
 	pos += vel * dt;
 
-
 	if (isShooting && !isMoving)
 	{
-			animations[(int)shooting].Update(dt);
+		
+			animations[(int)shooting].Update(dt);	
+			shootingTime += dt;
+			if (shootingTime >= shootingDuration)
+			{
+				isShooting = false;
+			}
 	}
 	else
 	{
 		animations[(int)iCurSequence].Update(dt);
 	}
+	Shooting(dt);
 
 }
 

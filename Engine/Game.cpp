@@ -38,7 +38,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	float dt = fpst.Mark();
+	
 
 	if (!(archer.isShooting))
 	{
@@ -73,20 +73,12 @@ void Game::UpdateModel()
 		if (!archer.isMoving)
 		{
 			archer.isShooting = true;
+			archer.shootingTime = 0.0f;
 			archer.arrowIsBeingShot = true;
 		}
 	}
-	if (archer.isShooting)
-	{
-		counter += 1;
-		if (counter >= int(1.1f * FPS)/*(1.0f/dt)*/)
-		{
-			archer.isShooting = false;
-			counter = 1;
-		}
-	}
+	
 
-	archer.Shooting(ft2.Mark());
 	archer.SetDirection();
 	archer.ClampToRect(RectI{ 0,(Graphics::ScreenWidth) / 3,0,Graphics::ScreenHeight });
 	archer.Update(ft.Mark());
