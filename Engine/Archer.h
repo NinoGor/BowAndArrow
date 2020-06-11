@@ -50,6 +50,7 @@ public:
 	float shootingTime = 0.0f;
 	bool isMoving = false;
 	Vec2 dir = { 0.0f,0.0f };
+	
 private:
 	Surface sprite;
 	Vec2 pos;
@@ -58,6 +59,5 @@ private:
 	Arrow arr1;  
 	std::vector<Arrow> arrows;
 	Sequence iCurSequence = Sequence::StandingDown;
-	Sequence shooting = Sequence::ShootingDown;
 	float speed = 80.0f;
 };

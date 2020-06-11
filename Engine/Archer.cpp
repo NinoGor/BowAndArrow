@@ -29,7 +29,9 @@ void Archer::Draw(Graphics& gfx) const
 	}
 	if (isShooting && !isMoving)
 	{
-		animations[(int)shooting].Draw((Vei2)pos, gfx);
+		int i = int(iCurSequence);
+		i += 4;
+		animations[i].Draw((Vei2)pos, gfx);
 	}
 
 	else
@@ -63,25 +65,21 @@ void Archer::SetDirection()
 			if (vel.x > 0.0f)
 			{
 				iCurSequence = Sequence::StandingRight;
-				shooting = Sequence::ShootingRight;
 				arr1.dir = { 1.0f,0.0f };
 			}
 			else if (vel.x < 0.0f)
 			{
 				iCurSequence = Sequence::StandingLeft;
-				shooting = Sequence::ShootingLeft;
 				arr1.dir = { -1.0f,0.0f };
 			}
 			else if (vel.y < 0.0f)
 			{
 				iCurSequence = Sequence::StandingUp;
-				shooting = Sequence::ShootingUp;
 				arr1.dir = { 0.0f, -1.0f };
 			}
 			else if (vel.y > 0.0f)
 			{
 				iCurSequence = Sequence::StandingDown;
-				shooting = Sequence::ShootingDown;
 				arr1.dir = { 0.0f,1.0f };
 			}
 		}
@@ -97,18 +95,17 @@ void Archer::Update(float dt)
 
 	if (isShooting && !isMoving)
 	{
-		
-			animations[(int)shooting].Update(dt);	
-			shootingTime += dt;
-			if (shootingTime >= shootingDuration)
-			{
-				isShooting = false;
-			}
+		int i = int(iCurSequence);
+		i += 4;
+		animations[i].Update(dt);
+		shootingTime += dt;
+		if (shootingTime >= shootingDuration)
+		{
+			isShooting = false;
+		}
 	}
-	else
-	{
 		animations[(int)iCurSequence].Update(dt);
-	}
+	
 	Shooting(dt);
 
 }
