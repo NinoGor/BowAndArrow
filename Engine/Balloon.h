@@ -22,7 +22,7 @@ public:
 private:
 	float angle = 0.0f;
 	Sequence iCurSequence = Sequence::Floating;
-	Surface sprite = "Balloon20x34.bmp";
+	Surface sprite = "Balloon27x56.bmp";
 	
 	//Vec2 vel = { 0.0f,0.0f };
 	float speed = 80.0f;

@@ -5,9 +5,9 @@ Balloon::Balloon(const Vec2& pos)
 	pos(pos)
 {
 	
-	animations.emplace_back(Animation(0, 0, 20, 34, 4, sprite, 0.16f));
+	animations.emplace_back(Animation(0, 0, 27, 56, 4, sprite, 0.16f));
 	
-	animations.emplace_back(Animation(0, 34, 20, 34, 6, sprite, 0.16f));
+	animations.emplace_back(Animation(0, 56, 27, 56, 6, sprite, 0.16f));
 }
 
 void Balloon::DrawAndUpdate(Graphics& gfx, float dt)
