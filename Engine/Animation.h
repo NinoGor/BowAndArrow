@@ -14,6 +14,7 @@ public:
 	void Draw(const Vei2& pos, Graphics& gfx, const RectI& clip) const;
 	void Update(float dt);
 	void Advance();
+	void Reset();
 private:
 	Color chroma;
 	const Surface& sprite;

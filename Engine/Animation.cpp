@@ -41,3 +41,10 @@ void Animation::Advance()
 		iCurFrame = 0;
 	}
 }
+
+void Animation::Reset()
+{
+	iCurFrame = frames.size();
+}
+
+

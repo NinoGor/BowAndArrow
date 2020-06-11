@@ -12,15 +12,21 @@ private:
 		WalkingLeft,
 		WalkingDown,
 		WalkingRight,
+
 		StandingUp,
 		StandingLeft,
 		StandingDown,
 		StandingRight,
 
-	    ShootingUp,
-		ShootingLeft,
-		ShootingDown,
-		ShootingRight,
+		StretchingUp,
+		StretchingLeft,
+		StretchingDown,
+		StretchingRight,
+
+		StretchedUp,
+		StretchedLeft,
+		StretchedDown,
+		StretchedRight,
 
 		Count
 	};
@@ -44,9 +50,12 @@ public:
 	void ClampToRect(const RectI& rect);
 
 	void Shooting(float dt);
-	bool arrowIsBeingShot = false;
+	bool ArrowIsFlying = false;
+	bool bowIsStretched = false;
 	bool isShooting = false;
-	float shootingDuration = 1.04f;
+	bool isStretching = false;
+
+	float fullStretchTime = 0.8f;
 	float shootingTime = 0.0f;
 	bool isMoving = false;
 	Vec2 dir = { 0.0f,0.0f };

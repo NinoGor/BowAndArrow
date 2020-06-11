@@ -37,9 +37,7 @@ void Game::Go()
 }
 
 void Game::UpdateModel()
-{
-	
-
+{	
 	if (!(archer.isShooting))
 	{
 		archer.dir = { 0.0f,0.0f };
@@ -68,15 +66,24 @@ void Game::UpdateModel()
 			archer.isMoving = false;
 		}
 	}
-	if (wnd.kbd.KeyIsPressed(VK_SPACE))
+	if (!archer.isMoving)
 	{
-		if (!archer.isMoving)
+		const auto e = wnd.kbd.ReadKey();
+		if (e.IsPress() && e.GetCode() == VK_SPACE)
 		{
 			archer.isShooting = true;
+			archer.isStretching = true;
 			archer.shootingTime = 0.0f;
-			archer.arrowIsBeingShot = true;
+		}
+		else if (e.IsRelease() && e.GetCode() == VK_SPACE)
+		{
+			archer.isStretching = false;
+			archer.bowIsStretched = false;
+			archer.isShooting = false;
+
 		}
 	}
+	
 	
 
 	archer.SetDirection();

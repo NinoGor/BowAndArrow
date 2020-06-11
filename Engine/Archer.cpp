@@ -9,15 +9,19 @@ Archer::Archer(const Vec2& pos)
 	{
 		animations.emplace_back(Animation(64, 64*i, 64, 64, 8, sprite, 0.16f));
 	}
-	for (int i = (int)Sequence::StandingUp; i < (int)Sequence::ShootingUp; i++)
+	for (int i = (int)Sequence::StandingUp; i < (int)Sequence::StretchingUp; i++)
 	{
 		animations.emplace_back(Animation(0, 64 * (i- (int)Sequence::StandingUp), 64, 64, 1, sprite, 0.16f));
 	}
-
-	for (int i = (int)Sequence::ShootingUp; i < (int)Sequence::Count; i++)
+	for (int i = (int)Sequence::StretchingUp; i < (int)Sequence::StretchedUp; i++)
 	{
-		animations.emplace_back(Animation(0, 64 * (i-4), 64, 64, 11, sprite, 0.10f));
+		animations.emplace_back(Animation(0, 64 * (i - 4), 64, 64, 8, sprite, 0.10f));
 	}
+	for (int i = (int)Sequence::StretchedUp; i < (int)Sequence::Count; i++)
+	{
+		animations.emplace_back(Animation(8*64, 64 * (i - 8), 64, 64, 1, sprite, 0.10f));
+	}
+	
 }
 
 
@@ -29,9 +33,18 @@ void Archer::Draw(Graphics& gfx) const
 	}
 	if (isShooting && !isMoving)
 	{
-		int i = int(iCurSequence);
-		i += 4;
-		animations[i].Draw((Vei2)pos, gfx);
+		if (isStretching && !bowIsStretched)
+		{
+			int i = int(iCurSequence);
+			i += 4;
+			animations[i].Draw((Vei2)pos, gfx);
+		}
+		else if (bowIsStretched)
+		{
+			int i = int(iCurSequence);
+			i += 8;
+			animations[i].Draw((Vei2)pos, gfx);
+		}
 	}
 
 	else
@@ -93,18 +106,37 @@ void Archer::Update(float dt)
 {
 	pos += vel * dt;
 
+	
+
 	if (isShooting && !isMoving)
 	{
-		int i = int(iCurSequence);
-		i += 4;
-		animations[i].Update(dt);
+		
 		shootingTime += dt;
-		if (shootingTime >= shootingDuration)
+		if (shootingTime >= fullStretchTime)
 		{
-			isShooting = false;
+			bowIsStretched = true;
+			ArrowIsFlying = true;
 		}
+
+		if (isStretching && !bowIsStretched)
+		{
+			int i = int(iCurSequence);
+			i += 4;
+
+			animations[i].Update(dt);
+		}
+		else if (bowIsStretched)
+		{
+			int i = int(iCurSequence);
+			i += 8;
+			animations[i].Update(dt);
+		}
+
 	}
-		animations[(int)iCurSequence].Update(dt);
+	
+		
+	
+	animations[(int)iCurSequence].Update(dt);
 	
 	Shooting(dt);
 
@@ -133,15 +165,16 @@ void Archer::ClampToRect(const RectI & rect)
 
 void Archer::Shooting(float dt)
 {
-	if (arrowIsBeingShot)
+	if (ArrowIsFlying)
 	{
 		if (!isShooting && !isMoving)
 		{
 			arr1.pos = Vec2(float(pos.x + 32), float(pos.y + 29));
 			arr1.vel = arr1.dir*arr1.speed;
 			arrows.emplace_back(arr1);
-			arrowIsBeingShot = false;
+			ArrowIsFlying = false;
 		}
+		
 	}
 	for (int i = 0; i < arrows.size(); i++)
 	{
