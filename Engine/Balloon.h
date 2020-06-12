@@ -21,6 +21,8 @@ public:
 	void Draw(Graphics& gfx);
 	void Update(float dt);
 	Vec2 pos = { 520.0f,270.0f };
+	Vec2 screenCenter = { 520.0f,270.0f };
+	bool isPierced = false;
 private:
 	float linearMovingTime = 0.0f;
 	float linearMovingDuration = 2.5f;
@@ -28,8 +30,6 @@ private:
 	float angle = -1.55f;
 	Sequence iCurSequence = Sequence::Floating;
 	Surface sprite = "Balloon27x56.bmp";
-	
-	//Vec2 vel = { 0.0f,0.0f };
 	float speed = 80.0f;
 	std::vector<Animation> animations;
 };

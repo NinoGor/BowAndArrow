@@ -85,7 +85,13 @@ void Game::UpdateModel()
 		}
 	}
 	
-	
+	for (int i = 0; i < archer.arrows.size(); i++)
+	{
+		if (isColliding(archer.arrows[i], b1))
+		{
+			b1.isPierced = true;
+		}
+	}
 
 	archer.SetDirection();
 	archer.ClampToRect(RectI{ 0,(Graphics::ScreenWidth) / 3,0,Graphics::ScreenHeight });
@@ -95,12 +101,23 @@ void Game::UpdateModel()
 	//b1.Update(ft.Mark());
 	b1.Update(b.Mark());
 	
-
 	
+	
+}
+
+bool Game::isColliding(const Archer::Arrow& a, Balloon b)
+{
+	return
+		a.pos.x + 33.0f >= b.pos.x &&
+		a.pos.x <= b.pos.x + 27.0f &&
+		a.pos.y + 7.0f >= b.pos.y &&
+		a.pos.y <= b.pos.y + 36.0f; // height minus the string
+
 }
 
 void Game::ComposeFrame()
 {
+
 	gfx.DrawSprite(0, 0, bckgrnd);
 	b1.Draw(gfx);
 	archer.Draw(gfx);

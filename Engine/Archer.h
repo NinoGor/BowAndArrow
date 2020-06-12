@@ -2,6 +2,7 @@
 
 #include "Animation.h"
 #include "Vec2.h"
+#include "Balloon.h"
 
 class Archer
 {
@@ -30,6 +31,7 @@ private:
 
 		Count
 	};
+public:
 	class Arrow
 	{
 	public:
@@ -59,14 +61,15 @@ public:
 	float shootingTime = 0.0f;
 	bool isMoving = false;
 	Vec2 dir = { 0.0f,0.0f };
+
+	std::vector<Arrow> arrows;
 	
 private:
 	Surface sprite;
 	Vec2 pos;
 	Vec2 vel = { 0.0f,0.0f };
 	std::vector<Animation> animations;
-	Arrow arr1;  
-	std::vector<Arrow> arrows;
+	Arrow arr1;
 	Sequence iCurSequence = Sequence::StandingDown;
 	float speed = 80.0f;
 };

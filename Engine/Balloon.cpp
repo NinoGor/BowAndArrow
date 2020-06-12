@@ -19,7 +19,7 @@ void Balloon::Draw(Graphics& gfx)
 		}
 		else
 		{
-			animations[(int)iCurSequence].Draw({ int(pos.x + 200 * cos(angle)), int(pos.y + 200 * sin(angle)) }, gfx);
+			animations[(int)iCurSequence].Draw(Vei2(pos), gfx);
 		}
 	}
 }
@@ -38,7 +38,7 @@ void Balloon::Update(float dt)
 		else
 		{
 			animations[(int)iCurSequence].Update(dt);
-			pos = { 520.0f,270.0f };
+			pos = { float(screenCenter.x + 200 * cos(angle)), float(screenCenter.y + 200 * sin(angle)) };
 			if (angle == 2.0f * float(PI))
 			{
 				angle = 0.0f;

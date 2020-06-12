@@ -42,6 +42,9 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+	
+	bool isColliding(const Archer::Arrow& a,  Balloon b);
+
 	/********************************/
 private:
 	MainWindow& wnd;
