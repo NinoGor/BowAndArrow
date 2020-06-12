@@ -21,7 +21,7 @@ public:
 	float FullyOpenDuration = 10.0f;
 	float Time = 0.0f;
 	Sequence iCurSequence = Sequence::Opening;
-	bool isOnScreen = true;
+	bool FullyOpened = false;
 private:
 	std::vector<Animation> animations;
 	Surface sprite = "portal65x65.bmp";

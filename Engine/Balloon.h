@@ -17,12 +17,14 @@ private:
 	};
 
 public:
-	Balloon(const Vec2& pos);
+	Balloon();
 	void DrawAndUpdate(Graphics& gfx, float dt);
-	Vec2 pos;
+	Vec2 pos = { 520.0f,270.0f };
 private:
-	Portal portal = Portal({ 400.0f,300.0f });
-	float angle = 0.0f;
+	float linearMovingTime = 0.0f;
+	float linearMovingDuration = 2.5f;
+	Portal portal = Portal({ 500.0f,260.0f });
+	float angle = -1.55f;
 	Sequence iCurSequence = Sequence::Floating;
 	Surface sprite = "Balloon27x56.bmp";
 	

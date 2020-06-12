@@ -25,6 +25,7 @@ void Portal::Update(float dt)
 	if (Time >= 1.2f)
 	{
 		//at this point the portal is fully open
+		FullyOpened = true;
 		iCurSequence = Sequence::FullyOpen;
 	}
 	if (Time >= FullyOpenDuration)

@@ -55,7 +55,7 @@ private:
 	FrameTimer ft2;
 	FrameTimer b;
 	Archer archer = Archer({100.0f,100.0f});
-	Balloon b1 = Balloon({550.0f,250.0f});
+	Balloon b1;
 	std::vector<Balloon> balloons;
 	/********************************/
 };
