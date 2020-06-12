@@ -38,6 +38,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {	
+	float dt = ft.Mark();
 	if (!(archer.isShooting))
 	{
 		archer.dir = { 0.0f,0.0f };
@@ -88,7 +89,8 @@ void Game::UpdateModel()
 
 	archer.SetDirection();
 	archer.ClampToRect(RectI{ 0,(Graphics::ScreenWidth) / 3,0,Graphics::ScreenHeight });
-	archer.Update(ft.Mark());
+	archer.Update(dt);
+	
 	//balloons.emplace_back(Vec2{200.0f, 200.0f});
 	//b1.Update(ft.Mark());
 	b1.DrawAndUpdate(gfx, b.Mark());
@@ -104,5 +106,6 @@ void Game::ComposeFrame()
 			gfx.PutPixel(Graphics::ScreenWidth / 3, i, Colors::Cyan);
 	}
 	archer.Draw(gfx);
+	
 	
 }

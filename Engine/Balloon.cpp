@@ -12,6 +12,8 @@ Balloon::Balloon(const Vec2& pos)
 
 void Balloon::DrawAndUpdate(Graphics& gfx, float dt)
 {
+	portal.Update(dt);
+	portal.Draw(gfx);
 	
 	if (angle == 2.0f * float(PI))
 	{

@@ -27,6 +27,7 @@
 #include "Animation.h"
 #include "FrameTimer.h"
 #include "Archer.h"
+#include "Portal.h"
 #include "Balloon.h"
 
 class Game
