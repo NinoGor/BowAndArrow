@@ -18,7 +18,8 @@ private:
 
 public:
 	Balloon();
-	void DrawAndUpdate(Graphics& gfx, float dt);
+	void Draw(Graphics& gfx);
+	void Update(float dt);
 	Vec2 pos = { 520.0f,270.0f };
 private:
 	float linearMovingTime = 0.0f;

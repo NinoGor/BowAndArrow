@@ -93,7 +93,7 @@ void Game::UpdateModel()
 	
 	//balloons.emplace_back(Vec2{200.0f, 200.0f});
 	//b1.Update(ft.Mark());
-	b1.DrawAndUpdate(gfx, b.Mark());
+	b1.Update(b.Mark());
 	
 
 	
@@ -103,8 +103,10 @@ void Game::ComposeFrame()
 {
 	for (int i = 0; i < 600; i++)
 	{
-			gfx.PutPixel(Graphics::ScreenWidth / 3, i, Colors::Cyan);
+		for(int x = Graphics::ScreenWidth / 3; x< Graphics::ScreenWidth; x++)
+			gfx.PutPixel(x, i, Colors::Cyan);
 	}
+	b1.Draw(gfx);
 	archer.Draw(gfx);
 	
 	
