@@ -2,9 +2,7 @@
 
 Balloon::Balloon()
 {
-	
 	animations.emplace_back(Animation(0, 0, 27, 56, 4, sprite, 0.16f));
-	
 	animations.emplace_back(Animation(0, 56, 27, 56, 6, sprite, 0.16f));
 }
 
@@ -16,7 +14,7 @@ void Balloon::Draw(Graphics& gfx)
 	{
 		if (linearMovingTime < linearMovingDuration)
 		{
-			animations[(int)iCurSequence].Draw({ int(pos.x), int(pos.y) }, gfx);
+			animations[(int)iCurSequence].Draw((Vei2)pos, gfx);
 
 		}
 		else
@@ -39,6 +37,7 @@ void Balloon::Update(float dt)
 		}
 		else
 		{
+			animations[(int)iCurSequence].Update(dt);
 			pos = { 520.0f,270.0f };
 			if (angle == 2.0f * float(PI))
 			{
@@ -50,6 +49,7 @@ void Balloon::Update(float dt)
 			}
 		}
 	}
+	
 }
 
 
