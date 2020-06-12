@@ -26,6 +26,10 @@ public:
 private:
 	float linearMovingTime = 0.0f;
 	float linearMovingDuration = 2.5f;
+
+	float poppingTime = 0.0f;
+	float poppingDuration = 0.6f;
+	
 	Portal portal = Portal({ 500.0f,260.0f });
 	float angle = -1.55f;
 	Sequence iCurSequence = Sequence::Floating;
