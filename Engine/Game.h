@@ -50,6 +50,7 @@ private:
 	/*  User Variables              */
 	int counter = 0;
 	int FPS = 60;
+	Surface bckgrnd = "Background.bmp";
 	FrameTimer ft;
 	FrameTimer fpst;
 	FrameTimer ft2;

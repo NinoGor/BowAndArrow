@@ -101,11 +101,7 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	for (int i = 0; i < 600; i++)
-	{
-		for(int x = Graphics::ScreenWidth / 3; x< Graphics::ScreenWidth; x++)
-			gfx.PutPixel(x, i, Colors::Cyan);
-	}
+	gfx.DrawSprite(0, 0, bckgrnd);
 	b1.Draw(gfx);
 	archer.Draw(gfx);
 	
