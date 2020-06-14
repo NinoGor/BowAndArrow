@@ -51,6 +51,8 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+
+
 	int counter = 0;
 	int FPS = 60;
 	Surface bckgrnd = "Background.bmp";
@@ -60,6 +62,5 @@ private:
 	FrameTimer b;
 	Archer archer = Archer({100.0f,100.0f});
 	Balloon b1;
-	std::vector<Balloon> balloons;
 	/********************************/
 };

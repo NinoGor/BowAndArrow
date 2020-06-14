@@ -8,7 +8,6 @@ Balloon::Balloon()
 
 void Balloon::Draw(Graphics& gfx)
 {
-	portal.Draw(gfx);
 
 	if (portal.FullyOpened)
 	{
