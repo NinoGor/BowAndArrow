@@ -193,19 +193,19 @@ void Archer::Arrow::Draw(Graphics & gfx) const
 {
 	if (dir.x > 0.0f)
 	{
-		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 0,34,0,9 }, ArrowSprite);
+		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 0,34,0,9 }, ArrowSprite, SpriteEffect::Chroma{chroma});
 	}
 	else if (dir.x < 0.0f)
 	{
-		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 34,68,0,9 }, ArrowSprite);
+		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 34,68,0,9 }, ArrowSprite, SpriteEffect::Chroma{chroma});
 	}
 	else if (dir.y > 0.0f)
 	{
-		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 0,9,0,34 }, ArrowSprite2);
+		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 0,9,0,34 }, ArrowSprite2, SpriteEffect::Chroma{chroma});
 	}
 	else if (dir.y < 0.0f)
 	{
-		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 0,9,34,68 }, ArrowSprite2);
+		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 0,9,34,68 }, ArrowSprite2, SpriteEffect::Chroma{chroma});
 	}
 	
 }

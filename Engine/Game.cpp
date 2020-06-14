@@ -123,7 +123,7 @@ bool Game::isColliding(const Archer::Arrow& a, Balloon b)
 void Game::ComposeFrame()
 {
 
-	gfx.DrawSprite(0, 0, bckgrnd);
+	gfx.DrawSprite(0, 0, bckgrnd, SpriteEffect::Copy{});
 	b1.portal.Draw(gfx);
     b1.Draw(gfx);
 	

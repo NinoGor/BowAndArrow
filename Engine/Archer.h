@@ -3,6 +3,7 @@
 #include "Animation.h"
 #include "Vec2.h"
 #include "Balloon.h"
+#include "SpriteEffect.h"
 
 class Archer
 {
@@ -43,6 +44,7 @@ public:
 		Vec2 vel = {0.0f,0.0f};
 		float speed = 350.0f;
 		Vec2 dir = { 0.0f,1.0f };
+		Color chroma = Colors::Magenta;
 	};
 public:
 	Archer(const Vec2& pos);

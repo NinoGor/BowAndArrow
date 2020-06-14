@@ -29,6 +29,7 @@
 #include "Archer.h"
 #include "Portal.h"
 #include "Balloon.h"
+#include "SpriteEffect.h"
 
 class Game
 {
