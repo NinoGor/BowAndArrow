@@ -1,6 +1,9 @@
 #include "Balloon.h"
 
-Balloon::Balloon()
+
+Balloon::Balloon(Vec2 pos)
+	:
+	pos(pos)
 {
 	animations.emplace_back(Animation(0, 0, 27, 56, 4, sprite, 0.16f));
 	animations.emplace_back(Animation(0, 56, 27, 56, 6, sprite, 0.1f));
@@ -38,7 +41,7 @@ void Balloon::Update(float dt)
 		else if(linearMovingTime >= linearMovingDuration && !isPierced)
 		{
 			animations[(int)iCurSequence].Update(dt);
-			pos = { float(screenCenter.x + 200 * cos(angle)), float(screenCenter.y + 200 * sin(angle)) };
+			pos = { float(Center.x + 100 * cos(angle)), float(Center.y + 100 * sin(angle)) };
 			if (angle == 2.0f * float(PI))
 			{
 				angle = 0.0f;
@@ -59,6 +62,10 @@ void Balloon::Update(float dt)
 				}
 				iCurSequence = Sequence::Popping;
 				pos.y += 2 * speed * dt;
+			}
+			else
+			{
+				isOutOfScreen = true;
 			}
 		}
 	}

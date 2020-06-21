@@ -21,11 +21,15 @@
 #include "MainWindow.h"
 #include "Game.h"
 
-Game::Game( MainWindow& wnd )
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd )
+	wnd(wnd),
+	gfx(wnd),
+	rng(rd()),
+	xDist(350, 700),
+	yDist(100, 400)
 {
+	balloons.emplace_back(Vec2((float)xDist(rng), (float)yDist(rng)));
 }
 
 void Game::Go()
@@ -38,6 +42,8 @@ void Game::Go()
 
 void Game::UpdateModel()
 {	
+	
+
 	float dt = ft.Mark();
 	if (!(archer.isShooting))
 	{
@@ -85,26 +91,32 @@ void Game::UpdateModel()
 		}
 	}
 	
-	
 
-	for (int i = 0; i < archer.arrows.size(); i++)
+	for (int n = 0; n < balloons.size(); n++)
 	{
-		for (int n = 0; n < archer.arrows.size(); n++)
+		if (balloons[n].isOutOfScreen)
 		{
-			if (isColliding(archer.arrows[i], b1))
+			balloons.erase(balloons.begin() + n);
+			balloons.emplace_back(Vec2{ (float)xDist(rng), (float)yDist(rng) });
+		}
+		for (int i = 0; i < archer.arrows.size(); i++)
+		{
+			if (isColliding(archer.arrows[i], balloons[n]))
 			{
-				b1.isPierced = true;
+				balloons[n].isPierced = true;
 			}
 		}
 	}
 
+
 	archer.SetDirection();
 	archer.ClampToRect(RectI{ 0,(Graphics::ScreenWidth) / 3,0,Graphics::ScreenHeight });
 	archer.Update(dt);
-
-	b1.Update(b.Mark());
 	
-	
+	for (int i = 0; i< balloons.size(); i++)
+	{
+		balloons[i].Update(dt);
+	}
 	
 	
 	
@@ -124,9 +136,11 @@ void Game::ComposeFrame()
 {
 
 	gfx.DrawSprite(0, 0, bckgrnd, SpriteEffect::Copy{});
-	b1.portal.Draw(gfx);
-    b1.Draw(gfx);
-	
+	for (int i = 0; i< balloons.size(); i++)
+	{
+		balloons[i].portal.Draw(gfx);
+		balloons[i].Draw(gfx);
+	}
 	archer.Draw(gfx);
 	
 	

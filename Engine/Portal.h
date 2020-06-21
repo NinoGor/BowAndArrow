@@ -15,10 +15,10 @@ private:
 		Count
 	};
 public:
-	Portal(const Vec2& pos);
+	Portal(const Vec2& pos, float FullyOpenDuration);
 	void Draw(Graphics& gfx) const;
 	void Update(float dt);
-	float FullyOpenDuration = 3.0f;
+	float FullyOpenDuration;
 	float Time = 0.0f;
 	Sequence iCurSequence = Sequence::Opening;
 	bool FullyOpened = false;

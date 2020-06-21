@@ -23,6 +23,7 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include <random>
 #include "Surface.h"
 #include "Animation.h"
 #include "FrameTimer.h"
@@ -52,6 +53,10 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	std::random_device rd;
+	std::mt19937 rng;
+	std::uniform_int_distribution<int> xDist;
+	std::uniform_int_distribution<int> yDist;
 
 
 	int counter = 0;
@@ -62,6 +67,7 @@ private:
 	FrameTimer ft2;
 	FrameTimer b;
 	Archer archer = Archer({100.0f,100.0f});
-	Balloon b1;
+
+	std::vector<Balloon> balloons;
 	/********************************/
 };

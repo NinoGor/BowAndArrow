@@ -1,8 +1,9 @@
 #include "Portal.h"
 
-Portal::Portal(const Vec2& pos)
+Portal::Portal(const Vec2& pos, float FullyOpenDuration)
 	:
-	pos(pos)
+	pos(pos),
+	FullyOpenDuration(FullyOpenDuration)
 {
 	animations.emplace_back(Animation(0, 0, 65, 65, 4, sprite, 0.3f));
 	animations.emplace_back(Animation(260, 0, 65, 65, 1, sprite, 0.16f));

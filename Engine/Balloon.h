@@ -17,21 +17,22 @@ private:
 	};
 
 public:
-	Balloon();
+	Balloon(Vec2 pos);
 	void Draw(Graphics& gfx);
 	void Update(float dt);
-	Vec2 pos = { 520.0f,270.0f };
-	Vec2 screenCenter = { 520.0f,270.0f };
-	Portal portal = Portal({ 500.0f,260.0f });
+	Vec2 pos;
+	Vec2 Center = { pos.x - 18.0f,pos.y };
+	Portal portal = Portal(Center, 2.0f);
 	bool isPierced = false;
+	bool isOutOfScreen = false;
 private:
 	float linearMovingTime = 0.0f;
-	float linearMovingDuration = 2.5f;
+	float linearMovingDuration = 1.2f;
 
 	float poppingTime = 0.0f;
 	float poppingDuration = 0.6f;
 
-	float angle = -1.55f;
+	float angle = -1.38f;
 	Sequence iCurSequence = Sequence::Floating;
 	Surface sprite = "Balloon27x56.bmp";
 	float speed = 80.0f;
