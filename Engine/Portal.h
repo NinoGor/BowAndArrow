@@ -22,8 +22,9 @@ public:
 	float Time = 0.0f;
 	Sequence iCurSequence = Sequence::Opening;
 	bool FullyOpened = false;
+	Vec2 pos;
 private:
 	std::vector<Animation> animations;
 	Surface sprite = "portal65x65.bmp";
-	Vec2 pos;
+
 };

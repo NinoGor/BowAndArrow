@@ -26,11 +26,12 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	rng(rd()),
-	xDist(350, 700),
-	yDist(100, 400)
+	xDist(400, 700),
+	yDist(100, 500)
 {
-	balloons.emplace_back(Vec2((float)xDist(rng), (float)yDist(rng)));
+	//balloons.emplace_back(Vec2((float)xDist(rng), (float)yDist(rng)));
 }
+
 
 void Game::Go()
 {
@@ -43,7 +44,7 @@ void Game::Go()
 void Game::UpdateModel()
 {	
 	
-
+	float dtb = b.Mark();
 	float dt = ft.Mark();
 	if (!(archer.isShooting))
 	{
@@ -91,17 +92,28 @@ void Game::UpdateModel()
 		}
 	}
 	
+	balloonSpawnCounter += dt;
+	if (balloonSpawnCounter>=balloonSpawnDelay && balloons.size()<numOfBalloons)
+	{
+		b1.pos = (Vec2((float)xDist(rng), (float)yDist(rng)));
+		b1.Center = { b1.pos.x - 18.0f,b1.pos.y };
+		b1.portal.pos = b1.Center;
+		balloons.push_back(Balloon(b1));
+
+		balloonSpawnCounter = 0.0f;
+		balloonSpawnDelay = 5.0f;
+	}
+
 
 	for (int n = 0; n < balloons.size(); n++)
 	{
 		if (balloons[n].isOutOfScreen)
 		{
 			balloons.erase(balloons.begin() + n);
-			balloons.emplace_back(Vec2{ (float)xDist(rng), (float)yDist(rng) });
 		}
 		for (int i = 0; i < archer.arrows.size(); i++)
 		{
-			if (isColliding(archer.arrows[i], balloons[n]))
+			if (isColliding(archer.arrows[i], balloons[n]) && balloons[n].portal.FullyOpened)
 			{
 				balloons[n].isPierced = true;
 			}
@@ -115,7 +127,7 @@ void Game::UpdateModel()
 	
 	for (int i = 0; i< balloons.size(); i++)
 	{
-		balloons[i].Update(dt);
+		balloons[i].Update(dtb);
 	}
 	
 	
@@ -136,7 +148,7 @@ void Game::ComposeFrame()
 {
 
 	gfx.DrawSprite(0, 0, bckgrnd, SpriteEffect::Copy{});
-	for (int i = 0; i< balloons.size(); i++)
+	for (int i = balloons.size()-1; i>=0 ; i--)
 	{
 		balloons[i].portal.Draw(gfx);
 		balloons[i].Draw(gfx);

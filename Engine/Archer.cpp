@@ -169,7 +169,7 @@ void Archer::Shooting(float dt)
 	{
 		if (!isShooting && !isMoving)
 		{
-			arr1.pos = Vec2(float(pos.x + 32), float(pos.y + 29));
+			arr1.pos = Vec2(float(pos.x + 20), float(pos.y + 29));
 			arr1.vel = arr1.dir*arr1.speed;
 			arrows.emplace_back(arr1);
 			ArrowIsFlying = false;
