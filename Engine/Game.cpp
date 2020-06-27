@@ -29,7 +29,6 @@ Game::Game(MainWindow& wnd)
 	xDist(400, 700),
 	yDist(100, 500)
 {
-	//balloons.emplace_back(Vec2((float)xDist(rng), (float)yDist(rng)));
 }
 
 
@@ -79,6 +78,7 @@ void Game::UpdateModel()
 		const auto e = wnd.kbd.ReadKey();
 		if (e.IsPress() && e.GetCode() == VK_SPACE)
 		{
+			archer.AnimIsReset = false;
 			archer.isShooting = true;
 			archer.isStretching = true;
 			archer.shootingTime = 0.0f;
@@ -140,7 +140,7 @@ bool Game::isColliding(const Archer::Arrow& a, Balloon b)
 		a.pos.x + 33.0f >= b.pos.x + 2 &&
 		a.pos.x <= b.pos.x + 27.0f &&
 		a.pos.y + 6.0f >= b.pos.y + 2 &&
-		a.pos.y <= b.pos.y + 36.0f; // height minus the string
+		a.pos.y <= b.pos.y + 32.0f; 
 
 }
 

@@ -63,8 +63,6 @@ private:
 	int FPS = 60;
 	Surface bckgrnd = "Background.bmp";
 	FrameTimer ft;
-	FrameTimer fpst;
-	FrameTimer ft2;
 	FrameTimer b;
 	Archer archer = Archer({100.0f,100.0f});
 

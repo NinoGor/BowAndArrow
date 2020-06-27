@@ -48,7 +48,7 @@ public:
 	{}
 	Color& operator =( Color color )
 	{
-		dword = color.dword;
+       	dword = color.dword;
 		return *this;
 	}
 	bool operator==(const Color& rhs) const

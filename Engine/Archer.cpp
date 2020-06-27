@@ -117,12 +117,15 @@ void Archer::Update(float dt)
 			bowIsStretched = true;
 			ArrowIsFlying = true;
 		}
-
 		if (isStretching && !bowIsStretched)
 		{
 			int i = int(iCurSequence);
 			i += 4;
-
+			if (!AnimIsReset)
+			{
+				animations[i].Reset();
+				AnimIsReset = true;
+			}
 			animations[i].Update(dt);
 		}
 		else if (bowIsStretched)
@@ -131,11 +134,8 @@ void Archer::Update(float dt)
 			i += 8;
 			animations[i].Update(dt);
 		}
-
 	}
-	
-		
-	
+
 	animations[(int)iCurSequence].Update(dt);
 	
 	Shooting(dt);

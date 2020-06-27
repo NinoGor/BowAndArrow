@@ -59,13 +59,14 @@ public:
 	bool isShooting = false;
 	bool isStretching = false;
 
-	float fullStretchTime = 0.8f;
+	float fullStretchTime = 0.7f;
+
 	float shootingTime = 0.0f;
 	bool isMoving = false;
 	Vec2 dir = { 0.0f,0.0f };
-
 	std::vector<Arrow> arrows;
-	
+	bool AnimIsReset = false;
+
 private:
 	Surface sprite;
 	Vec2 pos;

@@ -28,7 +28,7 @@ void Animation::Update(float dt)
 {
 	curFrameTime += dt;
 	while (curFrameTime >= holdTime)
-	{
+	{		
 		Advance();
 		curFrameTime -= holdTime;
 	}
@@ -45,7 +45,7 @@ void Animation::Advance()
 
 void Animation::Reset()
 {
-	iCurFrame = (int)frames.size();
+	iCurFrame = 0;
 }
 
 
