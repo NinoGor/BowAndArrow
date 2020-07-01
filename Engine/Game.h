@@ -62,9 +62,10 @@ private:
 	int counter = 0;
 	int FPS = 60;
 	Surface bckgrnd = "Background.bmp";
+	Surface rtcl = "Reticle.bmp";
 	FrameTimer ft;
 	FrameTimer b;
-	Archer archer = Archer({100.0f,100.0f});
+	Archer archer = Archer({350.0f,250.0f});
 
 	Balloon b1 = Balloon({0.0f,0.0f});
 	int numOfBalloons = 5;

@@ -27,6 +27,7 @@ Archer::Archer(const Vec2& pos)
 
 void Archer::Draw(Graphics& gfx) const
 {
+	
 	for (int i = 0; i < arrows.size(); i++)
 	{
 		arrows[i].Draw(gfx);
@@ -78,22 +79,18 @@ void Archer::SetDirection()
 			if (vel.x > 0.0f)
 			{
 				iCurSequence = Sequence::StandingRight;
-				arr1.dir = { 1.0f,0.0f };
 			}
 			else if (vel.x < 0.0f)
 			{
 				iCurSequence = Sequence::StandingLeft;
-				arr1.dir = { -1.0f,0.0f };
 			}
 			else if (vel.y < 0.0f)
 			{
 				iCurSequence = Sequence::StandingUp;
-				arr1.dir = { 0.0f, -1.0f };
 			}
 			else if (vel.y > 0.0f)
 			{
 				iCurSequence = Sequence::StandingDown;
-				arr1.dir = { 0.0f,1.0f };
 			}
 		}
 		
@@ -102,7 +99,7 @@ void Archer::SetDirection()
 
 
 
-void Archer::Update(float dt)
+void Archer::Update(float dt, const Mouse& mouse)
 {
 	pos += vel * dt;
 
@@ -138,7 +135,7 @@ void Archer::Update(float dt)
 
 	animations[(int)iCurSequence].Update(dt);
 	
-	Shooting(dt);
+	Shooting(dt, mouse);
 
 }
 
@@ -146,7 +143,7 @@ void Archer::ClampToRect(const RectI & rect)
 {
 	if (pos.x+20.0f < (float)rect.left)
 	{
-		pos.x = -20.0f;
+		pos.x = -20.0f + (float)rect.left;
 	}
 	else if (pos.x+64.0f - 20.0f >= (float)rect.right)
 	{
@@ -155,7 +152,7 @@ void Archer::ClampToRect(const RectI & rect)
 
 	if (pos.y+10.0f < (float)rect.top)
 	{
-		pos.y= -10.0f;
+		pos.y = -10.0f + (float)rect.top;
 	}
 	else if (pos.y+64.0f >= (float)rect.bottom)
 	{
@@ -163,15 +160,63 @@ void Archer::ClampToRect(const RectI & rect)
 	}
 }
 
-void Archer::Shooting(float dt)
+Vec2 Archer::GetArcherCentre()
 {
+	return Vec2(pos.x +30.0f ,pos.y + 40.0f);
+}
+
+void Archer::Shooting(float dt, const Mouse& mouse)
+{
+	if (mouse.LeftIsPressed())
+	{
+		Vec2 mousePos = Vec2((float)mouse.GetPosX(), (float)mouse.GetPosY());
+		AimDir = (mousePos - GetArcherCentre()).GetNormilized();
+
+		if (fabsf(AimDir.x) >= fabsf(AimDir.y))
+		{
+			if (AimDir.x > 0.0f)
+			{
+				iCurSequence = Sequence::StandingRight;
+			}
+			else
+			{
+				iCurSequence = Sequence::StandingLeft;
+			}
+		}
+		else
+		{
+			if (AimDir.y > 0.0f)
+			{
+				iCurSequence = Sequence::StandingDown;
+			}
+			else
+			{
+				iCurSequence = Sequence::StandingUp;
+			}
+		}
+	}
 	if (ArrowIsFlying)
 	{
 		if (!isShooting && !isMoving)
 		{
-			arr1.pos = Vec2(float(pos.x + 20), float(pos.y + 29));
+			arr1.pos = Vec2(float(pos.x + 20), float(pos.y + 20));
+			arr1.dir = AimDir;
 			arr1.vel = arr1.dir*arr1.speed;
 			arrows.emplace_back(arr1);
+			if (true)
+			{
+				arr1.pos = Vec2(float(pos.x + 20), float(pos.y + 20));
+				float angle1 = atan2f(AimDir.y, AimDir.x) + 0.2f;
+				arr1.dir = Vec2(cosf(angle1), sinf(angle1));
+				arr1.vel = arr1.dir * arr1.speed;
+				arrows.emplace_back(arr1);
+
+				arr1.pos = Vec2(float(pos.x + 20), float(pos.y + 20));
+				float angle2 = atan2f(AimDir.y, AimDir.x) - 0.2f;
+				arr1.dir = Vec2(cosf(angle2), sinf(angle2));
+				arr1.vel = arr1.dir * arr1.speed;
+				arrows.emplace_back(arr1);
+			}
 			ArrowIsFlying = false;
 		}
 		
@@ -188,26 +233,12 @@ void Archer::Shooting(float dt)
 	}
 }
 
-
-void Archer::Arrow::Draw(Graphics & gfx) const
+void Archer::Arrow::Draw(Graphics & gfx) const 
 {
-	if (dir.x > 0.0f)
-	{
-		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 0,34,0,9 }, ArrowSprite, SpriteEffect::Chroma{chroma});
-	}
-	else if (dir.x < 0.0f)
-	{
-		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 34,68,0,9 }, ArrowSprite, SpriteEffect::Chroma{chroma});
-	}
-	else if (dir.y > 0.0f)
-	{
-		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 0,9,0,34 }, ArrowSprite2, SpriteEffect::Chroma{chroma});
-	}
-	else if (dir.y < 0.0f)
-	{
-		gfx.DrawSprite((int)pos.x, (int)pos.y, RectI{ 0,9,34,68 }, ArrowSprite2, SpriteEffect::Chroma{chroma});
-	}
-	
+	gfx.DrawSpriteRotated((int)pos.x, (int)pos.y, Sprite, atan2f(dir.y, dir.x), SpriteEffect::Chroma{chroma});
 }
+
+
+
 
 

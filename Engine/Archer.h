@@ -4,6 +4,8 @@
 #include "Vec2.h"
 #include "Balloon.h"
 #include "SpriteEffect.h"
+#include "Mouse.h"
+#include <math.h> 
 
 class Archer
 {
@@ -38,8 +40,7 @@ public:
 	public:
 		Arrow() = default;
 		void Draw(Graphics& gfx) const;
-		Surface ArrowSprite = "ArrowH.bmp";
-		Surface ArrowSprite2 = "ArrowV.bmp";
+		Surface Sprite = "Arrow.bmp";
 		Vec2 pos = {0.0f,0.0f};
 		Vec2 vel = {0.0f,0.0f};
 		float speed = 350.0f;
@@ -50,10 +51,10 @@ public:
 	Archer(const Vec2& pos);
 	void Draw(Graphics& gfx) const;
 	void SetDirection();
-	void Update(float dt);
+	void Update(float dt, const Mouse& mouse);
 	void ClampToRect(const RectI& rect);
-
-	void Shooting(float dt);
+	Vec2 GetArcherCentre();
+	void Shooting(float dt, const Mouse& mouse);
 	bool ArrowIsFlying = false;
 	bool bowIsStretched = false;
 	bool isShooting = false;
@@ -64,6 +65,7 @@ public:
 	float shootingTime = 0.0f;
 	bool isMoving = false;
 	Vec2 dir = { 0.0f,0.0f };
+	Vec2 AimDir = { 0.0f,1.0f };
 	std::vector<Arrow> arrows;
 	bool AnimIsReset = false;
 

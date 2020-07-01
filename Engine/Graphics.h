@@ -112,6 +112,60 @@ public:
 			}
 		}
 	}
+	template<typename E>
+	void DrawSpriteRotated(int x, int y, const Surface& s, float angle, E effect)
+	{
+		DrawSpriteRotated(x, y, s.GetRect(), s, angle, effect);
+	}
+	template<typename E>
+	void DrawSpriteRotated(int x, int y, const RectI& srcRect, const Surface& s, float angle, E effect)
+	{
+		DrawSpriteRotated(x, y, srcRect, GetScreenRect(), s,  angle,  effect);
+	}
+	template<typename E>
+	void DrawSpriteRotated(int x, int y, RectI srcRect, const RectI& clip, const Surface& s, float angle, E effect)
+	{
+		assert(srcRect.left >= 0);
+		assert(srcRect.right <= s.GetWidth());
+		assert(srcRect.top >= 0);
+		assert(srcRect.bottom <= s.GetHeight());
+
+	    
+		if (x < clip.left)
+		{
+			srcRect.left += clip.left - x;
+			x = clip.left;
+		
+		}
+		if (x + srcRect.GetWidth() > clip.right)
+		{
+			srcRect.right -= x + srcRect.GetWidth() - clip.right;
+		}
+		if (y < clip.top)
+		{
+			srcRect.top += clip.top - y;
+			y = clip.top;
+		}
+		if (y + srcRect.GetHeight() > clip.bottom)
+		{
+			srcRect.bottom -= y + srcRect.GetHeight() + clip.bottom;
+		}
+		for (int sy = srcRect.top + 1; sy < srcRect.bottom; sy++)
+		{
+			for (int sx = srcRect.left; sx < srcRect.right; sx++)
+			{
+					Vec2 Rot = Vec2(sx + srcRect.left, sy - srcRect.top).GetRotated(angle, (Vec2)srcRect.GetCenter());
+					int X = int(Rot.x);
+					int Y = int(Rot.y);
+					effect(
+						s.GetPixel(sx, sy),
+						x + X,
+						y + Y,
+						*this
+					);
+			}
+		}
+	}
 	~Graphics();
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;

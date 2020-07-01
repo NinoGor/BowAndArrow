@@ -72,6 +72,27 @@ public:
 		}
 		return *this;
 	}
+	Vec2_& Rotate(float angle, Vec2_& ArbPoint)
+	{
+		const T cosAngle = cos(angle);
+		const T sinAngle = sin(angle);
+
+		x -= ArbPoint.x;
+		y -= ArbPoint.y;
+		const T newX = x * cosAngle - y * sinAngle;
+		y = x * sinAngle + y * cosAngle;
+		x = newX;
+
+
+		x += ArbPoint.x;
+		y += ArbPoint.y;
+
+		return *this = { x,y };
+	}
+	Vec2_ GetRotated(float angle, Vec2_& ArbPoint) const
+	{
+		return Vec2_(*this).Rotate(angle, ArbPoint);
+	}
 public:
 	T x;
 	T y;

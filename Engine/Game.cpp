@@ -48,22 +48,22 @@ void Game::UpdateModel()
 	if (!(archer.isShooting))
 	{
 		archer.dir = { 0.0f,0.0f };
-		if (wnd.kbd.KeyIsPressed(VK_UP))
+		if (wnd.kbd.KeyIsPressed('W'))
 		{
 			archer.dir.y -= 1.0f;
 			archer.isMoving = true;
 		}
-		else if (wnd.kbd.KeyIsPressed(VK_DOWN))
+		else if (wnd.kbd.KeyIsPressed('S'))
 		{
 			archer.dir.y += 1.0f;
 			archer.isMoving = true;
 		}
-		else if (wnd.kbd.KeyIsPressed(VK_LEFT))
+		else if (wnd.kbd.KeyIsPressed('A'))
 		{
 			archer.dir.x -= 1.0f;
 			archer.isMoving = true;
 		}
-		else if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+		else if (wnd.kbd.KeyIsPressed('D'))
 		{
 			archer.dir.x += 1.0f;
 			archer.isMoving = true;
@@ -75,20 +75,24 @@ void Game::UpdateModel()
 	}
 	if (!archer.isMoving)
 	{
-		const auto e = wnd.kbd.ReadKey();
-		if (e.IsPress() && e.GetCode() == VK_SPACE)
+		while (!wnd.mouse.IsEmpty())
 		{
-			archer.AnimIsReset = false;
-			archer.isShooting = true;
-			archer.isStretching = true;
-			archer.shootingTime = 0.0f;
-		}
-		else if (e.IsRelease() && e.GetCode() == VK_SPACE)
-		{
-			archer.isStretching = false;
-			archer.bowIsStretched = false;
-			archer.isShooting = false;
+			const Mouse::Event e = wnd.mouse.Read();
+			if (e.GetType() == Mouse::Event::Type::LPress)
+			{	
+				archer.AnimIsReset = false;
+				archer.isShooting = true;
+				archer.isStretching = true;
+				archer.shootingTime = 0.0f;
+				
+			}
+			else if (e.GetType() == Mouse::Event::Type::LRelease)
+			{
+				archer.isStretching = false;
+				archer.bowIsStretched = false;
+				archer.isShooting = false;
 
+			}
 		}
 	}
 	
@@ -122,8 +126,8 @@ void Game::UpdateModel()
 
 
 	archer.SetDirection();
-	archer.ClampToRect(RectI{ 0,(Graphics::ScreenWidth) / 3,0,Graphics::ScreenHeight });
-	archer.Update(dt);
+	archer.ClampToRect(RectI{335,465, 195, 355});
+	archer.Update(dt, wnd.mouse);
 	
 	for (int i = 0; i< balloons.size(); i++)
 	{
@@ -148,12 +152,15 @@ void Game::ComposeFrame()
 {
 
 	gfx.DrawSprite(0, 0, bckgrnd, SpriteEffect::Copy{});
-	for (int i = balloons.size()-1; i>=0 ; i--)
+	for (int i = balloons.size() - 1; i >= 0; i--)
 	{
 		balloons[i].portal.Draw(gfx);
 		balloons[i].Draw(gfx);
 	}
+
 	archer.Draw(gfx);
+	gfx.DrawSprite(wnd.mouse.GetPosX() - 14, wnd.mouse.GetPosY() - 14, rtcl, SpriteEffect::Chroma{ Color{255,0,255} });
+
 	
-	
+
 }

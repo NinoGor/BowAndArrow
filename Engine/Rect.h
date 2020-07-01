@@ -41,7 +41,7 @@ public:
 
 	bool Contains(const Vec2_<T>& point) const
 	{
-		return poT.x >= left && poT.x < right && poT.y >= top && poT.y < bottom;
+		return point.x >= left && point.x < right && point.y >= top && point.y < bottom;
 	}
 
 	Rect_ FromCenter(const Vec2_<T>& center, T halfWidth, T halfHeight)
@@ -68,6 +68,14 @@ public:
 	T GetHeight() const
 	{
 		return bottom - top;
+	}
+	Vec2_<T> GetTopLeft() const
+	{
+		return{ left,top };
+	}
+	Vec2_<T> GetBottomRight() const
+	{
+		return{ right,bottom };
 	}
 public:
 	T left;
