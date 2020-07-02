@@ -29,6 +29,7 @@ Game::Game(MainWindow& wnd)
 	xDist(400, 700),
 	yDist(100, 500)
 {
+	music.Play(1.0f, 1.0f);
 }
 
 
@@ -42,9 +43,11 @@ void Game::Go()
 
 void Game::UpdateModel()
 {	
+
 	
 	float dtb = b.Mark();
 	float dt = ft.Mark();
+
 	if (!(archer.isShooting))
 	{
 		archer.dir = { 0.0f,0.0f };
@@ -101,10 +104,10 @@ void Game::UpdateModel()
 		if (counter == 0)
 		{
 			b1.pos = Vec2(385, 280);
-			b1.Center = { b1.pos.x ,b1.pos.y };
+			b1.Center = { 385, 280 };
 			b1.linearMovingDuration = 0.0f;
 			b1.portal.FullyOpenDuration = balloonSpawnDelay * (numOfBalloons-1);
-			b1.portal.pos = { b1.Center.x,b1.Center.y - 196.0f };
+			b1.portal.pos = { b1.Center.x - 17.0f,b1.Center.y - 205.0f };
 			balloons.push_back(Balloon(b1));
 			counter++;
 		}
@@ -114,14 +117,14 @@ void Game::UpdateModel()
 			if (balloonSpawnCounter >= balloonSpawnDelay && balloons.size() < numOfBalloons)
 			{
 				b1.pos = Vec2(385, 280); 
-				b1.Center = { b1.pos.x ,b1.pos.y };
+				b1.Center = { 385, 280 };
 				b1.linearMovingDuration = 0.0f;
 				b1.portal.FullyOpenDuration = 2.0f;
 				b1.hasPortal = false;
-				b1.portal.pos = { b1.Center.x,b1.Center.y - 196.0f };
+				b1.portal.pos = { b1.Center.x,b1.Center.y - 205.0f };
 				balloons.push_back(Balloon(b1));
 				counter++;
-					balloonSpawnCounter = 0.0f;
+				balloonSpawnCounter = 0.0f;
 			}
 		}
 		else
@@ -130,13 +133,12 @@ void Game::UpdateModel()
 			if (balloonSpawnCounter >= balloonSpawnDelay && balloons.size() < numOfBalloons)
 			{
 				b1.pos = Vec2(385, 280);
-				b1.Center = { b1.pos.x ,b1.pos.y };
+				b1.Center = { 385, 280 };
 				b1.hasPortal = true;
 				b1.linearMovingDuration = 0.0f;
 				b1.portal.FullyOpenDuration = 0.0f; 
-				b1.portal.pos = { b1.Center.x,b1.Center.y - 196.0f };
+				b1.portal.pos = { b1.Center.x - 17.0f, b1.Center.y - 205.0f };
 				balloons.push_back(Balloon(b1));
-				counter++;
 				
 				balloonSpawnCounter = 0.0f;
 				balloonSpawnDelay = 3.0f;
@@ -155,6 +157,7 @@ void Game::UpdateModel()
 		{
 			if (isColliding(archer.arrows[i], balloons[n]) && balloons[n].portal.FullyOpened)
 			{
+				soundPop.Play();
 				balloons[n].isPierced = true;
 			}
 		}
@@ -170,18 +173,21 @@ void Game::UpdateModel()
 		balloons[i].Update(dtb);
 	}
 	
-	
-	
 }
 
 bool Game::isColliding(const Archer::Arrow& a, Balloon b)
 {
-	return
-		a.pos.x + 33.0f >= b.pos.x + 2 &&
+	if (a.pos.x + 33.0f >= b.pos.x + 2 &&
 		a.pos.x <= b.pos.x + 27.0f &&
 		a.pos.y + 6.0f >= b.pos.y + 2 &&
-		a.pos.y <= b.pos.y + 32.0f; 
-
+		a.pos.y <= b.pos.y + 32.0f)
+	{
+		if (!b.isPierced)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void Game::ComposeFrame()

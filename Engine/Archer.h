@@ -6,6 +6,7 @@
 #include "SpriteEffect.h"
 #include "Mouse.h"
 #include <math.h> 
+#include "Sound.h"
 
 class Archer
 {
@@ -77,4 +78,5 @@ private:
 	Arrow arr1;
 	Sequence iCurSequence = Sequence::StandingDown;
 	float speed = 80.0f;
+	Sound soundFire = Sound(L"Sounds\\FireArrow.wav");
 };

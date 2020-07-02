@@ -31,6 +31,7 @@
 #include "Portal.h"
 #include "Balloon.h"
 #include "SpriteEffect.h"
+#include "Sound.h"
 
 class Game
 {
@@ -72,5 +73,9 @@ private:
 	float balloonSpawnCounter = 0.0f;
 	float balloonSpawnDelay = 0.384f;
 	std::vector<Balloon> balloons;
+
+	Sound music = Sound(L"Sounds\\Music.wav", Sound::LoopType::AutoFullSound);
+	Sound soundPop = Sound( L"Sounds\\BalloonPop.wav");
+	
 	/********************************/
 };

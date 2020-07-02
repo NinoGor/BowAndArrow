@@ -34,7 +34,7 @@ private:
 	float poppingTime = 0.0f;
 	float poppingDuration = 0.6f;
 
-	float angle = -1.38f;
+	float angle = -1.55f; //-1.38f;
 	Sequence iCurSequence = Sequence::Floating;
 	Surface sprite = "Balloon27x56.bmp";
 	float speed = 80.0f;

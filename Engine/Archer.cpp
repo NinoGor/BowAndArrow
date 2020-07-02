@@ -171,7 +171,7 @@ void Archer::Shooting(float dt, const Mouse& mouse)
 	{
 		Vec2 mousePos = Vec2((float)mouse.GetPosX(), (float)mouse.GetPosY());
 		AimDir = (mousePos - GetArcherCentre()).GetNormilized();
-		if (!isMoving)
+		if (!isMoving && bowIsStretched)
 		{
 			if (fabsf(AimDir.x) >= fabsf(AimDir.y))
 			{
@@ -205,6 +205,7 @@ void Archer::Shooting(float dt, const Mouse& mouse)
 			arr1.dir = AimDir;
 			arr1.vel = arr1.dir*arr1.speed;
 			arrows.emplace_back(arr1);
+			soundFire.Play();
 			if (true)
 			{
 				arr1.pos = Vec2(float(pos.x + 20), float(pos.y + 20));
