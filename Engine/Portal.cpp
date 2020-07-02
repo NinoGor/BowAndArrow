@@ -1,9 +1,8 @@
 #include "Portal.h"
 
-Portal::Portal(const Vec2& pos, float FullyOpenDuration)
+Portal::Portal(const Vec2& pos)
 	:
-	pos(pos),
-	FullyOpenDuration(FullyOpenDuration)
+	pos(pos)
 {
 	animations.emplace_back(Animation(0, 0, 65, 65, 4, sprite, 0.3f));
 	animations.emplace_back(Animation(260, 0, 65, 65, 1, sprite, 0.16f));
@@ -13,7 +12,7 @@ Portal::Portal(const Vec2& pos, float FullyOpenDuration)
 
 void Portal::Draw(Graphics& gfx) const
 {
-	float t = FullyOpenDuration + 0.6f;
+	float t = 1.2f + FullyOpenDuration + 0.6f; 
 		if (Time < t)
 		{
 			animations[(int)iCurSequence].Draw((Vei2)pos, gfx);
@@ -28,7 +27,7 @@ void Portal::Update(float dt)
 		FullyOpened = true;
 		iCurSequence = Sequence::FullyOpen;
 	}
-	if (Time >= FullyOpenDuration)
+	if (Time >= 1.2f + FullyOpenDuration)
 	{
 		iCurSequence = Sequence::Closing;
 	}

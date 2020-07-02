@@ -17,17 +17,19 @@ private:
 	};
 
 public:
-	Balloon(Vec2 pos);
+	Balloon(Vec2 pos,float linearMovingDuration);
 	void Draw(Graphics& gfx);
 	void Update(float dt);
 	Vec2 pos;
 	Vec2 Center = { pos.x - 18.0f,pos.y };
-	Portal portal = Portal(Center, 2.0f);
+	bool hasPortal = true;
+	Portal portal = Portal(Center);
 	bool isPierced = false;
 	bool isOutOfScreen = false;
+	float linearMovingDuration = 1.2f;
 private:
 	float linearMovingTime = 0.0f;
-	float linearMovingDuration = 1.2f;
+	
 
 	float poppingTime = 0.0f;
 	float poppingDuration = 0.6f;

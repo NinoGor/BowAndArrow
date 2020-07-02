@@ -1,9 +1,10 @@
 #include "Balloon.h"
 
 
-Balloon::Balloon(Vec2 pos)
+Balloon::Balloon(Vec2 pos, float linearMovingDuration)
 	:
-	pos(pos)
+	pos(pos),
+	linearMovingDuration(linearMovingDuration)
 {
 	animations.emplace_back(Animation(0, 0, 27, 56, 4, sprite, 0.16f));
 	animations.emplace_back(Animation(0, 56, 27, 56, 6, sprite, 0.1f));
@@ -11,19 +12,19 @@ Balloon::Balloon(Vec2 pos)
 
 void Balloon::Draw(Graphics& gfx)
 {
-
 	if (portal.FullyOpened)
 	{
 		if (linearMovingTime < linearMovingDuration)
 		{
 			animations[(int)iCurSequence].Draw((Vei2)pos, gfx);
-
+		
 		}
 		else
 		{
 			animations[(int)iCurSequence].Draw(Vei2(pos), gfx);
 		}
 	}
+
 }
 
 void Balloon::Update(float dt)
@@ -32,26 +33,26 @@ void Balloon::Update(float dt)
 
 	if (portal.FullyOpened)
 	{
-		
-		if (linearMovingTime < linearMovingDuration && !isPierced)
-		{
-			linearMovingTime += dt;
-			pos.y -= speed * dt;
-		}
-		else if(linearMovingTime >= linearMovingDuration && !isPierced)
-		{
-			animations[(int)iCurSequence].Update(dt);
-			pos = { float(Center.x + 100 * cos(angle)), float(Center.y + 100 * sin(angle)) };
-			if (angle == 2.0f * float(PI))
+			if (linearMovingTime < linearMovingDuration && !isPierced)
 			{
-				angle = 0.0f;
+				linearMovingTime += dt;
+				pos.y -= speed * dt;
 			}
-			else
+			else if (linearMovingTime >= linearMovingDuration && !isPierced)
 			{
-				angle = std::min(angle += dt, 2 * float(PI));
-			}
-		}
-		else if (isPierced)
+				animations[(int)iCurSequence].Update(dt);
+				pos = { float(Center.x + 200 * cos(angle)), float(Center.y + 200 * sin(angle)) };
+				if (angle == 2.0f * float(PI))
+				{
+					angle = 0.0f;
+				}
+				else
+				{
+					angle = std::min(angle += dt, 2 * float(PI));
+				}
+			
+	}
+		if (isPierced)
 		{
 			if (pos.y < Graphics::ScreenHeight)
 			{

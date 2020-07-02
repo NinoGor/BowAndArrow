@@ -171,27 +171,29 @@ void Archer::Shooting(float dt, const Mouse& mouse)
 	{
 		Vec2 mousePos = Vec2((float)mouse.GetPosX(), (float)mouse.GetPosY());
 		AimDir = (mousePos - GetArcherCentre()).GetNormilized();
-
-		if (fabsf(AimDir.x) >= fabsf(AimDir.y))
+		if (!isMoving)
 		{
-			if (AimDir.x > 0.0f)
+			if (fabsf(AimDir.x) >= fabsf(AimDir.y))
 			{
-				iCurSequence = Sequence::StandingRight;
+				if (AimDir.x > 0.0f)
+				{
+					iCurSequence = Sequence::StandingRight;
+				}
+				else
+				{
+					iCurSequence = Sequence::StandingLeft;
+				}
 			}
 			else
 			{
-				iCurSequence = Sequence::StandingLeft;
-			}
-		}
-		else
-		{
-			if (AimDir.y > 0.0f)
-			{
-				iCurSequence = Sequence::StandingDown;
-			}
-			else
-			{
-				iCurSequence = Sequence::StandingUp;
+				if (AimDir.y > 0.0f)
+				{
+					iCurSequence = Sequence::StandingDown;
+				}
+				else
+				{
+					iCurSequence = Sequence::StandingUp;
+				}
 			}
 		}
 	}

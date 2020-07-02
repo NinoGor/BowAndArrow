@@ -73,7 +73,7 @@ void Game::UpdateModel()
 			archer.isMoving = false;
 		}
 	}
-	if (!archer.isMoving)
+	if (!archer.isMoving && counter > (numOfBalloons - 1))
 	{
 		while (!wnd.mouse.IsEmpty())
 		{
@@ -96,18 +96,54 @@ void Game::UpdateModel()
 		}
 	}
 	
-	balloonSpawnCounter += dt;
-	if (balloonSpawnCounter>=balloonSpawnDelay && balloons.size()<numOfBalloons)
-	{
-		b1.pos = (Vec2((float)xDist(rng), (float)yDist(rng)));
-		b1.Center = { b1.pos.x - 18.0f,b1.pos.y };
-		b1.portal.pos = b1.Center;
-		balloons.push_back(Balloon(b1));
 
-		balloonSpawnCounter = 0.0f;
-		balloonSpawnDelay = 5.0f;
-	}
 
+		if (counter == 0)
+		{
+			b1.pos = Vec2(385, 280);
+			b1.Center = { b1.pos.x ,b1.pos.y };
+			b1.linearMovingDuration = 0.0f;
+			b1.portal.FullyOpenDuration = balloonSpawnDelay * (numOfBalloons-1);
+			b1.portal.pos = { b1.Center.x,b1.Center.y - 196.0f };
+			balloons.push_back(Balloon(b1));
+			counter++;
+		}
+		if (counter > 0 && counter <= numOfBalloons - 1)
+		{
+			balloonSpawnCounter += dt;
+			if (balloonSpawnCounter >= balloonSpawnDelay && balloons.size() < numOfBalloons)
+			{
+				b1.pos = Vec2(385, 280); 
+				b1.Center = { b1.pos.x ,b1.pos.y };
+				b1.linearMovingDuration = 0.0f;
+				b1.portal.FullyOpenDuration = 2.0f;
+				b1.hasPortal = false;
+				b1.portal.pos = { b1.Center.x,b1.Center.y - 196.0f };
+				balloons.push_back(Balloon(b1));
+				counter++;
+					balloonSpawnCounter = 0.0f;
+			}
+		}
+		else
+		{
+			balloonSpawnCounter += dt;
+			if (balloonSpawnCounter >= balloonSpawnDelay && balloons.size() < numOfBalloons)
+			{
+				b1.pos = Vec2(385, 280);
+				b1.Center = { b1.pos.x ,b1.pos.y };
+				b1.hasPortal = true;
+				b1.linearMovingDuration = 0.0f;
+				b1.portal.FullyOpenDuration = 0.0f; 
+				b1.portal.pos = { b1.Center.x,b1.Center.y - 196.0f };
+				balloons.push_back(Balloon(b1));
+				counter++;
+				
+				balloonSpawnCounter = 0.0f;
+				balloonSpawnDelay = 3.0f;
+				
+			}
+		}
+	
 
 	for (int n = 0; n < balloons.size(); n++)
 	{
@@ -152,13 +188,18 @@ void Game::ComposeFrame()
 {
 
 	gfx.DrawSprite(0, 0, bckgrnd, SpriteEffect::Copy{});
-	for (int i = balloons.size() - 1; i >= 0; i--)
+	archer.Draw(gfx);
+	for (int i = 0; i < balloons.size(); i++)
 	{
+		if(balloons[i].hasPortal)
 		balloons[i].portal.Draw(gfx);
+	}
+	for (int i = 0; i < balloons.size(); i++)
+	{
 		balloons[i].Draw(gfx);
 	}
 
-	archer.Draw(gfx);
+	
 	gfx.DrawSprite(wnd.mouse.GetPosX() - 14, wnd.mouse.GetPosY() - 14, rtcl, SpriteEffect::Chroma{ Color{255,0,255} });
 
 	

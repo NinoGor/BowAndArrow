@@ -67,10 +67,10 @@ private:
 	FrameTimer b;
 	Archer archer = Archer({350.0f,250.0f});
 
-	Balloon b1 = Balloon({0.0f,0.0f});
-	int numOfBalloons = 5;
+	Balloon b1 = Balloon({0.0f,0.0f}, 0.0f);
+	int numOfBalloons = 16;
 	float balloonSpawnCounter = 0.0f;
-	float balloonSpawnDelay = 0.0f;
+	float balloonSpawnDelay = 0.384f;
 	std::vector<Balloon> balloons;
 	/********************************/
 };
