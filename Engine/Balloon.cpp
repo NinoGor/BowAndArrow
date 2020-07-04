@@ -14,15 +14,7 @@ void Balloon::Draw(Graphics& gfx)
 {
 	if (portal.FullyOpened)
 	{
-		if (linearMovingTime < linearMovingDuration)
-		{
-			animations[(int)iCurSequence].Draw((Vei2)pos, gfx);
-		
-		}
-		else
-		{
-			animations[(int)iCurSequence].Draw(Vei2(pos), gfx);
-		}
+		animations[(int)iCurSequence].Draw(Vei2(pos), gfx);
 	}
 
 }
@@ -41,7 +33,7 @@ void Balloon::Update(float dt)
 			else if (linearMovingTime >= linearMovingDuration && !isPierced)
 			{
 				animations[(int)iCurSequence].Update(dt);
-				pos = { float(Center.x + 200 * cos(angle)), float(Center.y + 200 * sin(angle)) };
+				pos = { float(Center.x + 200 * cos(angle)), float(Center.y + 200 * sin(angle))};
 				if (angle == 2.0f * float(PI))
 				{
 					angle = 0.0f;
@@ -62,7 +54,7 @@ void Balloon::Update(float dt)
 					animations[(int)iCurSequence].Update(dt);
 				}
 				iCurSequence = Sequence::Popping;
-				pos.y += 2 * speed * dt;
+				pos.y += speed * dt;
 			}
 			else
 			{
@@ -72,6 +64,12 @@ void Balloon::Update(float dt)
 	}
 	
 	
+}
+
+RectF Balloon::GetHitbox() const
+{
+	//return RectF(pos.x, pos.x + 27.0f, pos.y, pos.y + 35.0f);
+	return RectF(pos.x+5.0f, pos.x + 22.0f, pos.y+5.0f, pos.y + 25.0f);
 }
 
 

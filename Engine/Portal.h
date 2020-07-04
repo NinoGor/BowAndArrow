@@ -25,6 +25,6 @@ public:
 	Vec2 pos;
 private:
 	std::vector<Animation> animations;
-	Surface sprite = "portal65x65.bmp";
+	Surface sprite = "Images\\portal65x65.bmp";
 
 };

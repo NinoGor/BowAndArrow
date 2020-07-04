@@ -26,8 +26,9 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	rng(rd()),
-	xDist(400, 700),
-	yDist(100, 500)
+	xDist1(20, 100),
+	xDist2(500, 580),
+	x1v2(0,1)
 {
 	music.Play(1.0f, 1.0f);
 }
@@ -98,8 +99,6 @@ void Game::UpdateModel()
 			}
 		}
 	}
-	
-
 
 		if (counter == 0)
 		{
@@ -146,6 +145,22 @@ void Game::UpdateModel()
 			}
 		}
 	
+		bombSpawnCounter += dt;
+		if (bombSpawnCounter >= bombSpawnDelay)
+		{
+			if (x1v2(rng) == 0)
+			{
+				bomb1.pos.x = (float)xDist1(rng);
+				bombs.push_back(Bomb(bomb1));
+			}
+			else
+			{
+				bomb1.pos.x = (float)xDist2(rng);
+				bombs.push_back(Bomb(bomb1));
+			}
+			bombSpawnCounter = 0.0f;
+		}
+
 
 	for (int n = 0; n < balloons.size(); n++)
 	{
@@ -153,56 +168,80 @@ void Game::UpdateModel()
 		{
 			balloons.erase(balloons.begin() + n);
 		}
-		for (int i = 0; i < archer.arrows.size(); i++)
+		if (!balloons[n].isPierced)
 		{
-			if (isColliding(archer.arrows[i], balloons[n]) && balloons[n].portal.FullyOpened)
+			const auto balloon_hitbox = balloons[n].GetHitbox();
+			for (int i = 0; i < archer.arrows.size(); i++)
+			{	
+				if (archer.arrows[i].GetHitbox().IsOverlappingWith(balloon_hitbox) && balloons[n].portal.FullyOpened)
+				{
+						soundPop.Play();
+						balloons[n].isPierced = true;
+						score++;
+				}
+			}
+		}
+	}
+	for (int n = 0; n < bombs.size(); n++)
+	{
+		if (bombs[n].leftTheScreen)
+		{
+			bombs.erase(bombs.begin() + n);
+		}
+		if (!bombs[n].isHit)
+		{
+			const auto bomb_hitbox = bombs[n].GetHitbox();
+			for (auto& arrow : archer.arrows)
 			{
-				soundPop.Play();
-				balloons[n].isPierced = true;
+				if (arrow.GetHitbox().IsOverlappingWith(bomb_hitbox))
+				{
+					soundExplosion.Play();
+					bombs[n].isHit = true;
+				}
 			}
 		}
 	}
 
-
 	archer.SetDirection();
 	archer.ClampToRect(RectI{335,465, 195, 355});
 	archer.Update(dt, wnd.mouse);
-	
+
+	for (int i = 0; i < bombs.size(); i++)
+	{
+		if (bombs[i].leftTheScreen) 
+		{
+			bombs.erase(bombs.begin() + i);
+		}
+   		bombs[i].Update(dt);
+	}
 	for (int i = 0; i< balloons.size(); i++)
 	{
-		balloons[i].Update(dtb);
+		balloons[i].Update(dt);
 	}
 	
-}
-
-bool Game::isColliding(const Archer::Arrow& a, Balloon b)
-{
-	if (a.pos.x + 33.0f >= b.pos.x + 2 &&
-		a.pos.x <= b.pos.x + 27.0f &&
-		a.pos.y + 6.0f >= b.pos.y + 2 &&
-		a.pos.y <= b.pos.y + 32.0f)
-	{
-		if (!b.isPierced)
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 void Game::ComposeFrame()
 {
-
 	gfx.DrawSprite(0, 0, bckgrnd, SpriteEffect::Copy{});
-	archer.Draw(gfx);
-	for (int i = 0; i < balloons.size(); i++)
+	gfx.DrawSprite(306, 550, scoreBar, SpriteEffect::Chroma{Colors::Magenta});
+	font.DrawText("Score:",Vei2(320,563),Colors::White,gfx);
+	font.DrawText(std::to_string(score), Vei2(370, 563), Colors::White, gfx);
+
+	
+	for (auto& bomb:bombs)
 	{
-		if(balloons[i].hasPortal)
-		balloons[i].portal.Draw(gfx);
+		bomb.Draw(gfx);
+	} 
+	for (auto& balloon:balloons)
+	{
+		if(balloon.hasPortal)
+		balloon.portal.Draw(gfx);
 	}
-	for (int i = 0; i < balloons.size(); i++)
+	archer.Draw(gfx);
+	for (auto& balloon : balloons)
 	{
-		balloons[i].Draw(gfx);
+		balloon.Draw(gfx);
 	}
 
 	

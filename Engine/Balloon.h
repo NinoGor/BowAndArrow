@@ -20,6 +20,7 @@ public:
 	Balloon(Vec2 pos,float linearMovingDuration);
 	void Draw(Graphics& gfx);
 	void Update(float dt);
+	RectF GetHitbox() const;
 	Vec2 pos;
 	Vec2 Center = { pos.x - 18.0f,pos.y };
 	bool hasPortal = true;
@@ -34,9 +35,9 @@ private:
 	float poppingTime = 0.0f;
 	float poppingDuration = 0.6f;
 
-	float angle = -1.55f; //-1.38f;
+	float angle = -1.55f; 
 	Sequence iCurSequence = Sequence::Floating;
-	Surface sprite = "Balloon27x56.bmp";
-	float speed = 80.0f;
+	Surface sprite = "Images\\Balloon27x56.bmp";
+	float speed = 300.0f;
 	std::vector<Animation> animations;
 };

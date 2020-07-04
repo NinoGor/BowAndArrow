@@ -85,3 +85,4 @@ public:
 };
 
 typedef Rect_<int> RectI;
+typedef Rect_<float> RectF;

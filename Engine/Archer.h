@@ -41,7 +41,8 @@ public:
 	public:
 		Arrow() = default;
 		void Draw(Graphics& gfx) const;
-		Surface Sprite = "Arrow.bmp";
+		RectF GetHitbox() const;
+		Surface Sprite = "Images\\Arrow.bmp";
 		Vec2 pos = {0.0f,0.0f};
 		Vec2 vel = {0.0f,0.0f};
 		float speed = 350.0f;

@@ -30,7 +30,9 @@
 #include "Archer.h"
 #include "Portal.h"
 #include "Balloon.h"
+#include "Bomb.h"
 #include "SpriteEffect.h"
+#include "Font.h"
 #include "Sound.h"
 
 class Game
@@ -45,9 +47,6 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
-	
-	bool isColliding(const Archer::Arrow& a,  Balloon b);
-
 	/********************************/
 private:
 	MainWindow& wnd;
@@ -56,14 +55,16 @@ private:
 	/*  User Variables              */
 	std::random_device rd;
 	std::mt19937 rng;
-	std::uniform_int_distribution<int> xDist;
-	std::uniform_int_distribution<int> yDist;
+	std::uniform_int_distribution<int> xDist1;
+	std::uniform_int_distribution<int> xDist2;
+	std::uniform_int_distribution<int> x1v2;
 
 
 	int counter = 0;
-	int FPS = 60;
-	Surface bckgrnd = "Background.bmp";
-	Surface rtcl = "Reticle.bmp";
+	int score = 0;
+	Surface bckgrnd = "Images\\Background.bmp";
+	Surface rtcl = "Images\\Reticle.bmp";
+	Surface scoreBar = "Images\\ScoreBar188x39.bmp";
 	FrameTimer ft;
 	FrameTimer b;
 	Archer archer = Archer({350.0f,250.0f});
@@ -74,8 +75,15 @@ private:
 	float balloonSpawnDelay = 0.384f;
 	std::vector<Balloon> balloons;
 
+	Bomb bomb1 = Bomb({ 100.0f,-100.0f });
+	std::vector<Bomb> bombs;
+	float bombSpawnCounter = 0.0f;
+	float bombSpawnDelay = 10.0f;
+
+	Font font = "Images\\Font.bmp";
 	Sound music = Sound(L"Sounds\\Music.wav", Sound::LoopType::AutoFullSound);
 	Sound soundPop = Sound( L"Sounds\\BalloonPop.wav");
+	Sound soundExplosion = Sound(L"Sounds\\Explosion.wav");
 	
 	/********************************/
 };

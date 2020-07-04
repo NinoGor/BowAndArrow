@@ -2,7 +2,7 @@
 
 Archer::Archer(const Vec2& pos)
 	:
-	sprite("Archer.bmp"),
+	sprite("Images\\Archer.bmp"),
 	pos(pos)
 {
 	for (int i = 0; i < (int)Sequence::StandingUp; i++)
@@ -28,9 +28,9 @@ Archer::Archer(const Vec2& pos)
 void Archer::Draw(Graphics& gfx) const
 {
 	
-	for (int i = 0; i < arrows.size(); i++)
+	for (auto& arrow:arrows)
 	{
-		arrows[i].Draw(gfx);
+		arrow.Draw(gfx);
 	}
 	if (isShooting && !isMoving)
 	{
@@ -239,6 +239,32 @@ void Archer::Shooting(float dt, const Mouse& mouse)
 void Archer::Arrow::Draw(Graphics & gfx) const 
 {
 	gfx.DrawSpriteRotated((int)pos.x, (int)pos.y, Sprite, atan2f(dir.y, dir.x), SpriteEffect::Chroma{chroma});
+}
+
+RectF Archer::Arrow::GetHitbox() const
+{
+	if (fabsf(dir.x) >= fabsf(dir.y))
+	{
+		if (dir.x > 0.0f)
+		{
+			return RectF(pos.x + 27.0f, pos.x + 33.0f, pos.y + 15.0f, pos.y + 21.0f); //Right
+		}
+		else
+		{
+			return RectF(pos.x + 2.0f, pos.x + 8.0f, pos.y + 14.0f, pos.y + 20.0f); //Left
+		}
+	}
+	else
+	{
+		if (dir.y > 0.0f)
+		{
+			return RectF(pos.x + 14.0f, pos.x + 20.0f, pos.y + 27.0f, pos.y + 33.0f); //Down
+		}
+		else
+		{
+			return RectF(pos.x + 15.0f, pos.x + 21.0f, pos.y + 2.0f, pos.y + 8.0f); //Up
+		}
+	}
 }
 
 
