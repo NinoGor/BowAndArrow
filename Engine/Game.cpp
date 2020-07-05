@@ -59,188 +59,299 @@ void Game::UpdateModel()
 				gameIsOver = true;
 			}
 		}
-
-		if (!(archer.isShooting))
+		if (!paused)
 		{
-			archer.dir = { 0.0f,0.0f };
-			if (wnd.kbd.KeyIsPressed('W'))
+			if (!(archer.isShooting))
 			{
-				archer.dir.y -= 1.0f;
-				archer.isMoving = true;
-			}
-			else if (wnd.kbd.KeyIsPressed('S'))
-			{
-				archer.dir.y += 1.0f;
-				archer.isMoving = true;
-			}
-			else if (wnd.kbd.KeyIsPressed('A'))
-			{
-				archer.dir.x -= 1.0f;
-				archer.isMoving = true;
-			}
-			else if (wnd.kbd.KeyIsPressed('D'))
-			{
-				archer.dir.x += 1.0f;
-				archer.isMoving = true;
-			}
-			else
-			{
-				archer.isMoving = false;
-			}
-		}
-		if (!archer.isMoving && counter > (numOfBalloons - 1))
-		{
-			while (!wnd.mouse.IsEmpty())
-			{
-				const Mouse::Event e = wnd.mouse.Read();
-				if (e.GetType() == Mouse::Event::Type::LPress)
+				archer.dir = { 0.0f,0.0f };
+				if (wnd.kbd.KeyIsPressed('W'))
 				{
-					archer.AnimIsReset = false;
-					archer.isShooting = true;
-					archer.isStretching = true;
-					archer.shootingTime = 0.0f;
-
+					archer.dir.y -= 1.0f;
+					archer.isMoving = true;
 				}
-				else if (e.GetType() == Mouse::Event::Type::LRelease)
+				else if (wnd.kbd.KeyIsPressed('S'))
 				{
-					archer.isStretching = false;
-					archer.bowIsStretched = false;
-					archer.isShooting = false;
-
+					archer.dir.y += 1.0f;
+					archer.isMoving = true;
+				}
+				else if (wnd.kbd.KeyIsPressed('A'))
+				{
+					archer.dir.x -= 1.0f;
+					archer.isMoving = true;
+				}
+				else if (wnd.kbd.KeyIsPressed('D'))
+				{
+					archer.dir.x += 1.0f;
+					archer.isMoving = true;
+				}
+				else
+				{
+					archer.isMoving = false;
 				}
 			}
-		}
+			if (!archer.isMoving && counter > (numOfBalloons - 1))
+			{
+				while (!wnd.mouse.IsEmpty())
+				{
+					const Mouse::Event e = wnd.mouse.Read();
+					if (e.GetType() == Mouse::Event::Type::LPress)
+					{
+						archer.AnimIsReset = false;
+						archer.isShooting = true;
+						archer.isStretching = true;
+						archer.shootingTime = 0.0f;
 
-		if (counter == 0)
-		{
-			b1.pos = Vec2(385, 280);
-			b1.Center = { 385, 280 };
-			b1.linearMovingDuration = 0.0f;
-			b1.portal.FullyOpenDuration = balloonSpawnDelay * (numOfBalloons - 1);
-			b1.portal.pos = { b1.Center.x - 17.0f,b1.Center.y - 205.0f };
-			balloons.push_back(Balloon(b1));
-			counter++;
-		}
-		if (counter > 0 && counter <= numOfBalloons - 1)
-		{
-			balloonSpawnCounter += dt;
-			if (balloonSpawnCounter >= balloonSpawnDelay && balloons.size() < numOfBalloons)
+					}
+					else if (e.GetType() == Mouse::Event::Type::LRelease)
+					{
+						archer.isStretching = false;
+						archer.bowIsStretched = false;
+						archer.isShooting = false;
+
+					}
+				}
+			}
+
+			if (counter == 0)
 			{
 				b1.pos = Vec2(385, 280);
 				b1.Center = { 385, 280 };
 				b1.linearMovingDuration = 0.0f;
-				b1.portal.FullyOpenDuration = 2.0f;
-				b1.hasPortal = false;
-				b1.portal.pos = { b1.Center.x,b1.Center.y - 205.0f };
+				b1.portal.FullyOpenDuration = balloonSpawnDelay * (numOfBalloons - 1);
+				b1.portal.pos = { b1.Center.x - 17.0f,b1.Center.y - 205.0f };
 				balloons.push_back(Balloon(b1));
 				counter++;
-				balloonSpawnCounter = 0.0f;
 			}
-		}
-		else
-		{
-			balloonSpawnCounter += dt;
-			if (balloonSpawnCounter >= balloonSpawnDelay && balloons.size() < numOfBalloons)
+			if (counter > 0 && counter <= numOfBalloons - 1)
 			{
-				b1.pos = Vec2(385, 280);
-				b1.Center = { 385, 280 };
-				b1.hasPortal = true;
-				b1.linearMovingDuration = 0.0f;
-				b1.portal.FullyOpenDuration = 0.0f;
-				b1.portal.pos = { b1.Center.x - 17.0f, b1.Center.y - 205.0f };
-				balloons.push_back(Balloon(b1));
-
-				balloonSpawnCounter = 0.0f;
-				balloonSpawnDelay = 3.0f;
-
-			}
-		}
-
-		bombSpawnCounter += dt;
-		if (bombSpawnCounter >= bombSpawnDelay)
-		{
-			if (x1v2(rng) == 0)
-			{
-				bomb1.pos.x = (float)xDist1(rng);
-				bombs.push_back(Bomb(bomb1));
+				balloonSpawnCounter += dt;
+				if (balloonSpawnCounter >= balloonSpawnDelay && balloons.size() < numOfBalloons)
+				{
+					b1.pos = Vec2(385, 280);
+					b1.Center = { 385, 280 };
+					b1.linearMovingDuration = 0.0f;
+					b1.portal.FullyOpenDuration = 2.0f;
+					b1.hasPortal = false;
+					b1.portal.pos = { b1.Center.x,b1.Center.y - 205.0f };
+					balloons.push_back(Balloon(b1));
+					counter++;
+					balloonSpawnCounter = 0.0f;
+				}
 			}
 			else
 			{
-				bomb1.pos.x = (float)xDist2(rng);
-				bombs.push_back(Bomb(bomb1));
-			}
-			bombSpawnCounter = 0.0f;
-		}
-
-
-		for (int n = 0; n < balloons.size(); n++)
-		{
-			if (balloons[n].isOutOfScreen)
-			{
-				balloons.erase(balloons.begin() + n);
-			}
-			if (!balloons[n].isPierced)
-			{
-				const auto balloon_hitbox = balloons[n].GetHitbox();
-				for (int i = 0; i < archer.arrows.size(); i++)
+				balloonSpawnCounter += dt;
+				if (balloonSpawnCounter >= balloonSpawnDelay && balloons.size() < numOfBalloons)
 				{
-					if (archer.arrows[i].GetHitbox().IsOverlappingWith(balloon_hitbox) && balloons[n].portal.FullyOpened)
-					{
-						soundPop.Play();
-						balloons[n].isPierced = true;
-						score++;
-					}
+					b1.pos = Vec2(385, 280);
+					b1.Center = { 385, 280 };
+					b1.hasPortal = true;
+					b1.linearMovingDuration = 0.0f;
+					b1.portal.FullyOpenDuration = 0.0f;
+					b1.portal.pos = { b1.Center.x - 17.0f, b1.Center.y - 205.0f };
+					balloons.push_back(Balloon(b1));
+
+					balloonSpawnCounter = 0.0f;
+					balloonSpawnDelay = 3.0f;
+
 				}
 			}
-			if (!paused)
-				balloons[n].Update(dt);
-		}
-		for (int n = 0; n < bombs.size(); n++)
-		{
-			if (bombs[n].leftTheScreen)
+
+			bombSpawnCounter += dt;
+			if (bombSpawnCounter >= bombSpawnDelay)
 			{
-				bombs.erase(bombs.begin() + n);
-			}
-			if (!bombs[n].isHit)
-			{
-				const auto bomb_hitbox = bombs[n].GetHitbox();
-				for (auto& arrow : archer.arrows)
+				if (x1v2(rng) == 0)
 				{
-					if (arrow.GetHitbox().IsOverlappingWith(bomb_hitbox))
+					bomb1.pos.x = (float)xDist1(rng);
+					bombs.push_back(Bomb(bomb1));
+				}
+				else
+				{
+					bomb1.pos.x = (float)xDist2(rng);
+					bombs.push_back(Bomb(bomb1));
+				}
+				bombSpawnCounter = 0.0f;
+			}
+
+			qBoxSpawnCounter += dt;
+			if (qBoxSpawnCounter >= qBoxSpawnDelay)
+			{
+				if (x1v2(rng) == 0)
+				{
+					questionBoxes.emplace_back(Vec2{ (float)xDist1(rng) ,650.0f }, rng);
+				}
+				else
+				{
+					questionBoxes.emplace_back(Vec2{ (float)xDist2(rng) ,650.0f }, rng);
+				}
+				qBoxSpawnCounter = 0.0f;
+			}
+
+
+			for (int n = 0; n < balloons.size(); n++)
+			{
+				if (balloons[n].isOutOfScreen)
+				{
+					balloons.erase(balloons.begin() + n);
+				}
+				if (!balloons[n].isPierced)
+				{
+					const auto balloon_hitbox = balloons[n].GetHitbox();
+					for (int i = 0; i < archer.arrows.size(); i++)
 					{
-						
-						bombs[n].isHit = true;
-						hearts--;
-						if (!(hearts <= 0))
+						if (archer.arrows[i].GetHitbox().IsOverlappingWith(balloon_hitbox) && balloons[n].portal.FullyOpened)
 						{
-							soundExplosion.Play();
-							arrow.exploded = true;
+							soundPop.Play();
+							balloons[n].isPierced = true;
+							score++;
 						}
-						else
+					}
+				}
+				balloons[n].Update(dt);
+			}
+			for (int n = 0; n < bombs.size(); n++)
+			{
+				if (bombs[n].leftTheScreen)
+				{
+					bombs.erase(bombs.begin() + n);
+				}
+			}
+			for (auto& bomb : bombs)
+			{
+				if (!bomb.isHit)
+				{
+					const auto bomb_hitbox = bomb.GetHitbox();
+					for (int i = 0; i < archer.arrows.size(); i++)
+					{
+						if (archer.arrows[i].GetHitbox().IsOverlappingWith(bomb_hitbox))
 						{
-							if (bombs[n].isHit)
+
+							bomb.isHit = true;
+							if (!playerHasInvincibility)
+								hearts--;
+							if (!(hearts <= 0))
 							{
-								paused = true;
-								music.StopAll();
-								soundPause.Play();
+								soundExplosion.Play();
+								archer.arrows[i].exploded = true;
+
+							}
+							else
+							{
+								if (bomb.isHit)
+								{
+									paused = true;
+									music.StopAll();
+									soundPause.Play();
+								}
 							}
 						}
-					}
-					auto new_end = std::remove_if(archer.arrows.begin(), archer.arrows.end(), [](Archer::Arrow & arrow) {
-						return arrow.exploded;
-						});
-					archer.arrows.erase(new_end, archer.arrows.end());
+						auto new_end = std::remove_if(archer.arrows.begin(), archer.arrows.end(), [](Archer::Arrow & arrow) {
+							return arrow.exploded;
+							});
+						archer.arrows.erase(new_end, archer.arrows.end());
 
+					}
+				}
+				bomb.Update(dt);
+			}
+
+			for (int n = 0; n < questionBoxes.size(); n++)
+			{
+				if (questionBoxes[n].leftTheScreen)
+				{
+					questionBoxes.erase(questionBoxes.begin() + n);
 				}
 			}
-			if (!paused)
-				bombs[n].Update(dt);
-		}
 
-		archer.SetDirection();
-		archer.ClampToRect(RectI{ 335,465, 195, 355 });
-		if (!paused)
+			for (auto& qBox : questionBoxes)
+			{
+				if (!qBox.isHit)
+				{
+					const auto qBox_hitbox = qBox.GetHitbox();
+					for (auto& arrow : archer.arrows)
+					{
+						if (arrow.GetHitbox().IsOverlappingWith(qBox_hitbox))
+						{
+							qBox.isHit = true;
+						}
+					}
+					if (qBox.isHit)
+					{
+						soundQBox.Play();
+						if (!playerHasEffect)
+						{
+							if (qBox.effect == QuestionBox::Effect::Multishot)
+							{
+								archer.hasMultishot = true;
+								playerHasEffect = true;
+							}
+							else if (qBox.effect == QuestionBox::Effect::FullHealth && hearts < 3)
+							{
+								hearts = 3;
+								heartsEffect = true;
+								playerHasEffect = true;
+							}
+							else if (qBox.effect == QuestionBox::Effect::Invincibility)
+							{
+								playerHasInvincibility = true;
+								playerHasEffect = true;
+							}
+							else if (qBox.effect == QuestionBox::Effect::Slowness)
+							{
+								archer.hasSlowness = true;
+								playerHasEffect = true;
+							}
+							else if (qBox.effect == QuestionBox::Effect::MoreBombs)
+							{
+								bombSpawnDelay = 3.0f;
+								playerHasEffect = true;
+							}
+
+						}
+					}
+				}
+				qBox.Update(dt);
+			}
+			if (playerHasEffect)
+			{
+				if (EffectDuration <= 0.0f)
+				{
+					if (archer.hasMultishot)
+					{
+						archer.hasMultishot = false;
+					}
+					else if (playerHasInvincibility)
+					{
+						playerHasInvincibility = false;
+					}
+					else if (archer.hasSlowness)
+					{
+						archer.hasSlowness = false;
+					}
+					else if (bombSpawnDelay == 3.0f)
+					{
+						bombSpawnDelay = 10.0f;
+					}
+					else if (heartsEffect)
+					{
+						heartsEffect = false;
+					}
+					playerHasEffect = false;
+				}
+				else
+				{
+					EffectDuration -= dt;
+				}
+			}
+			else
+			{
+				EffectDuration = 20.0f;
+			}
+
+			archer.SetDirection();
+			archer.ClampToRect(RectI{ 335,465, 195, 355 });
 			archer.Update(dt, wnd.mouse);
+		}
 	}
 	else if (!gameIsStarted && !gameIsOver)
 	{
@@ -261,6 +372,7 @@ void Game::UpdateModel()
 			archer.arrows.erase(archer.arrows.begin(), archer.arrows.end());
 			balloons.erase(balloons.begin(), balloons.end());
 			bombs.erase(bombs.begin(), bombs.end());
+			questionBoxes.erase(questionBoxes.begin(), questionBoxes.end());
 
 			counter = 0;
 			score = 0;
@@ -268,6 +380,17 @@ void Game::UpdateModel()
 			balloonSpawnCounter = 0.0f;
 			balloonSpawnDelay = 0.384f;
 			bombSpawnCounter = 0.0f;
+			bombSpawnDelay = 10.0f;
+			qBoxSpawnCounter = 0.0f;
+
+			archer.hasMultishot = false;
+			heartsEffect = false;
+			playerHasInvincibility = false;
+			archer.hasSlowness = false;
+
+			playerHasEffect = false;
+			
+			EffectDuration = 20.0f;
 
 			music.Play(0.85f, 0.3f);
 
@@ -288,6 +411,10 @@ void Game::ComposeFrame()
 			{
 				bomb.Draw(gfx);
 			}
+			for (auto& qBox : questionBoxes)
+			{
+				qBox.Draw(gfx);
+			}
 			for (auto& balloon : balloons)
 			{
 				if (balloon.hasPortal)
@@ -295,9 +422,35 @@ void Game::ComposeFrame()
 			}
 			archer.Draw(gfx);
 
-			gfx.DrawSprite(306, 550, scoreBar, SpriteEffect::Chroma{ Colors::Magenta });
+			gfx.DrawSprite(306, 550, Bar, SpriteEffect::Chroma{ Colors::Magenta });
 			font.DrawText("Score:", Vei2(320, 563), Colors::White, gfx);
 			font.DrawText(std::to_string(score), Vei2(370, 563), Colors::White, gfx);
+
+			gfx.DrawSprite(306, 11, Bar, SpriteEffect::Chroma{ Colors::Magenta });
+			if (playerHasEffect)
+			{
+				if (!heartsEffect)
+				{
+					std::string num_text = std::to_string(EffectDuration);
+					std::string roundedED = num_text.substr(0, num_text.find(".") + 3);
+					font.DrawText(roundedED, Vei2(440, 24), Colors::White, gfx);
+				}
+				if(archer.hasMultishot)
+					font.DrawText("MULTISHOT", Vei2(320, 24), Colors::Green, gfx);
+				else if(playerHasInvincibility)
+					font.DrawText("INVINCIBILITY", Vei2(320, 24), Colors::Green, gfx);
+				else if (heartsEffect)
+					font.DrawText("HEARTS RESTORED", Vei2(345, 24), Colors::Green, gfx);
+				else if(archer.hasSlowness)
+					font.DrawText("SLOWNESS", Vei2(320, 24), Colors::Red, gfx);
+				else if (bombSpawnDelay == 3.0f)
+					font.DrawText("MORE BOMBS", Vei2(320, 24), Colors::Red, gfx);
+
+			}
+			else
+			{
+				font.DrawText("NO EFFECTS", Vei2(360, 24), Colors::White, gfx);
+			}
 
 			if (hearts == 3)
 			{

@@ -93,7 +93,14 @@ void Archer::SetDirection()
 				iCurSequence = Sequence::StandingDown;
 			}
 		}
-		
+		if (hasSlowness)
+		{
+			speed = 20.0f;
+		}
+		else
+		{
+			speed = 80.0f;
+		}
 	vel = dir*speed;
 }
 
@@ -104,7 +111,6 @@ void Archer::Update(float dt, const Mouse& mouse)
 	pos += vel * dt;
 
 	
-
 	if (isShooting && !isMoving)
 	{
 		
@@ -203,20 +209,32 @@ void Archer::Shooting(float dt, const Mouse& mouse)
 		{
 			arr1.pos = Vec2(float(pos.x + 20), float(pos.y + 20));
 			arr1.dir = AimDir;
+			if (hasSlowness)
+				arr1.speed = 100.0f;
+			else
+				arr1.speed = 350.0f;
 			arr1.vel = arr1.dir*arr1.speed;
 			arrows.emplace_back(arr1);
 			soundFire.Play();
-			if (true)
+			if (hasMultishot)
 			{
 				arr1.pos = Vec2(float(pos.x + 20), float(pos.y + 20));
 				float angle1 = atan2f(AimDir.y, AimDir.x) + 0.2f;
 				arr1.dir = Vec2(cosf(angle1), sinf(angle1));
+				if (hasSlowness)
+					arr1.speed = 100.0f;
+				else
+					arr1.speed = 350.0f;
 				arr1.vel = arr1.dir * arr1.speed;
 				arrows.emplace_back(arr1);
 
 				arr1.pos = Vec2(float(pos.x + 20), float(pos.y + 20));
 				float angle2 = atan2f(AimDir.y, AimDir.x) - 0.2f;
 				arr1.dir = Vec2(cosf(angle2), sinf(angle2));
+				if (hasSlowness)
+					arr1.speed = 100.0f;
+				else
+					arr1.speed = 350.0f;
 				arr1.vel = arr1.dir * arr1.speed;
 				arrows.emplace_back(arr1);
 			}
@@ -226,7 +244,10 @@ void Archer::Shooting(float dt, const Mouse& mouse)
 	}
 	for (int i = 0; i < arrows.size(); i++)
 	{
-		arrows[i].pos += arrows[i].vel*dt;
+		arrows[i].pos += arrows[i].vel * dt;
+	}
+	for (int i = 0; i < arrows.size(); i++)
+	{
 		if (int(arrows[i].pos.x) < 0 || int(arrows[i].pos.x) > Graphics::ScreenWidth
 			|| int(arrows[i].pos.y) < 0 || int(arrows[i].pos.y) > Graphics::ScreenHeight)
 		{

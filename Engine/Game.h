@@ -31,6 +31,7 @@
 #include "Portal.h"
 #include "Balloon.h"
 #include "Bomb.h"
+#include "QuestionBox.h"
 #include "SpriteEffect.h"
 #include "Font.h"
 #include "Sound.h"
@@ -66,6 +67,9 @@ private:
 	int hearts = 3;
 	int score = 0;
 	bool paused = false;
+	bool playerHasInvincibility = false;
+	bool heartsEffect = false;
+	bool playerHasEffect = false;
 
 	float pauseTime = 0.0f;
 	float pauseDuration = 4.0f;
@@ -74,7 +78,7 @@ private:
 	Surface startScreen = "Images\\StartScreen.bmp";
 	Surface gameOverScreen = "Images\\GameOverScreen.bmp";
 	Surface rtcl = "Images\\Reticle.bmp";
-	Surface scoreBar = "Images\\ScoreBar188x39.bmp";
+	Surface Bar = "Images\\ScoreBar188x39.bmp";
 	Surface heart = "Images\\Heart12x13.bmp";
 	FrameTimer ft;
 	Archer archer = Archer({367.0f,250.0f});
@@ -88,7 +92,13 @@ private:
 	Bomb bomb1 = Bomb({ 100.0f,-100.0f });
 	std::vector<Bomb> bombs;
 	float bombSpawnCounter = 0.0f;
-	float bombSpawnDelay = 10.0f;
+	float bombSpawnDelay = 10.0f; 
+
+	std::vector<QuestionBox> questionBoxes;
+	float qBoxSpawnCounter = 0.0f;
+	float qBoxSpawnDelay = 30.0f;
+	float EffectDuration = 20.0f;
+	
 
 	Font font = "Images\\Font.bmp";
 
@@ -98,6 +108,7 @@ private:
 	Sound soundPause = Sound(L"Sounds\\Pause.wav");
 	Sound soundPop = Sound( L"Sounds\\BalloonPop.wav");
 	Sound soundExplosion = Sound(L"Sounds\\Explosion.wav");
+	Sound soundQBox = Sound(L"Sounds\\qBox.wav");
 	
 	/********************************/
 };

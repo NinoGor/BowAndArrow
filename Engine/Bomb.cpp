@@ -29,7 +29,7 @@ void Bomb::Update(float dt)
 
 	if (isHit)
 	{
-		if (pos.y < Graphics::ScreenHeight)
+		if (!leftTheScreen)
 		{
 			explosionTime += dt;
 			if (explosionTime <= explosionDuration)

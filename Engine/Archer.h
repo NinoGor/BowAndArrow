@@ -72,13 +72,15 @@ public:
 	std::vector<Arrow> arrows;
 	bool AnimIsReset = false;
 	Vec2 pos;
+	bool hasMultishot = false;
+	bool hasSlowness = false;
 
 private:
+	float speed = 80.0f;
 	Surface sprite;
 	Vec2 vel = { 0.0f,0.0f };
 	std::vector<Animation> animations;
 	Arrow arr1;
 	Sequence iCurSequence = Sequence::StandingDown;
-	float speed = 80.0f;
 	Sound soundFire = Sound(L"Sounds\\FireArrow.wav");
 };
