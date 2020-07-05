@@ -30,7 +30,7 @@ Game::Game(MainWindow& wnd)
 	xDist2(500, 580),
 	x1v2(0,1)
 {
-	music.Play(1.0f, 1.0f);
+	startMusic.Play();
 }
 
 
@@ -44,68 +44,79 @@ void Game::Go()
 
 void Game::UpdateModel()
 {	
-
-	
-	float dtb = b.Mark();
 	float dt = ft.Mark();
-
-	if (!(archer.isShooting))
+	if (gameIsStarted && !gameIsOver)
 	{
-		archer.dir = { 0.0f,0.0f };
-		if (wnd.kbd.KeyIsPressed('W'))
+		if (paused)
 		{
-			archer.dir.y -= 1.0f;
-			archer.isMoving = true;
-		}
-		else if (wnd.kbd.KeyIsPressed('S'))
-		{
-			archer.dir.y += 1.0f;
-			archer.isMoving = true;
-		}
-		else if (wnd.kbd.KeyIsPressed('A'))
-		{
-			archer.dir.x -= 1.0f;
-			archer.isMoving = true;
-		}
-		else if (wnd.kbd.KeyIsPressed('D'))
-		{
-			archer.dir.x += 1.0f;
-			archer.isMoving = true;
-		}
-		else
-		{
-			archer.isMoving = false;
-		}
-	}
-	if (!archer.isMoving && counter > (numOfBalloons - 1))
-	{
-		while (!wnd.mouse.IsEmpty())
-		{
-			const Mouse::Event e = wnd.mouse.Read();
-			if (e.GetType() == Mouse::Event::Type::LPress)
-			{	
-				archer.AnimIsReset = false;
-				archer.isShooting = true;
-				archer.isStretching = true;
-				archer.shootingTime = 0.0f;
-				
-			}
-			else if (e.GetType() == Mouse::Event::Type::LRelease)
+			pauseTime += dt;
+			if (pauseTime >= pauseDuration)
 			{
-				archer.isStretching = false;
-				archer.bowIsStretched = false;
-				archer.isShooting = false;
-
+				pauseTime = 0.0f;
+				hearts = 3;
+				paused = false;
+				gameOverMusic.Play();
+				gameIsOver = true;
 			}
 		}
-	}
+
+		if (!(archer.isShooting))
+		{
+			archer.dir = { 0.0f,0.0f };
+			if (wnd.kbd.KeyIsPressed('W'))
+			{
+				archer.dir.y -= 1.0f;
+				archer.isMoving = true;
+			}
+			else if (wnd.kbd.KeyIsPressed('S'))
+			{
+				archer.dir.y += 1.0f;
+				archer.isMoving = true;
+			}
+			else if (wnd.kbd.KeyIsPressed('A'))
+			{
+				archer.dir.x -= 1.0f;
+				archer.isMoving = true;
+			}
+			else if (wnd.kbd.KeyIsPressed('D'))
+			{
+				archer.dir.x += 1.0f;
+				archer.isMoving = true;
+			}
+			else
+			{
+				archer.isMoving = false;
+			}
+		}
+		if (!archer.isMoving && counter > (numOfBalloons - 1))
+		{
+			while (!wnd.mouse.IsEmpty())
+			{
+				const Mouse::Event e = wnd.mouse.Read();
+				if (e.GetType() == Mouse::Event::Type::LPress)
+				{
+					archer.AnimIsReset = false;
+					archer.isShooting = true;
+					archer.isStretching = true;
+					archer.shootingTime = 0.0f;
+
+				}
+				else if (e.GetType() == Mouse::Event::Type::LRelease)
+				{
+					archer.isStretching = false;
+					archer.bowIsStretched = false;
+					archer.isShooting = false;
+
+				}
+			}
+		}
 
 		if (counter == 0)
 		{
 			b1.pos = Vec2(385, 280);
 			b1.Center = { 385, 280 };
 			b1.linearMovingDuration = 0.0f;
-			b1.portal.FullyOpenDuration = balloonSpawnDelay * (numOfBalloons-1);
+			b1.portal.FullyOpenDuration = balloonSpawnDelay * (numOfBalloons - 1);
 			b1.portal.pos = { b1.Center.x - 17.0f,b1.Center.y - 205.0f };
 			balloons.push_back(Balloon(b1));
 			counter++;
@@ -115,7 +126,7 @@ void Game::UpdateModel()
 			balloonSpawnCounter += dt;
 			if (balloonSpawnCounter >= balloonSpawnDelay && balloons.size() < numOfBalloons)
 			{
-				b1.pos = Vec2(385, 280); 
+				b1.pos = Vec2(385, 280);
 				b1.Center = { 385, 280 };
 				b1.linearMovingDuration = 0.0f;
 				b1.portal.FullyOpenDuration = 2.0f;
@@ -135,16 +146,16 @@ void Game::UpdateModel()
 				b1.Center = { 385, 280 };
 				b1.hasPortal = true;
 				b1.linearMovingDuration = 0.0f;
-				b1.portal.FullyOpenDuration = 0.0f; 
+				b1.portal.FullyOpenDuration = 0.0f;
 				b1.portal.pos = { b1.Center.x - 17.0f, b1.Center.y - 205.0f };
 				balloons.push_back(Balloon(b1));
-				
+
 				balloonSpawnCounter = 0.0f;
 				balloonSpawnDelay = 3.0f;
-				
+
 			}
 		}
-	
+
 		bombSpawnCounter += dt;
 		if (bombSpawnCounter >= bombSpawnDelay)
 		{
@@ -162,91 +173,163 @@ void Game::UpdateModel()
 		}
 
 
-	for (int n = 0; n < balloons.size(); n++)
-	{
-		if (balloons[n].isOutOfScreen)
+		for (int n = 0; n < balloons.size(); n++)
 		{
-			balloons.erase(balloons.begin() + n);
-		}
-		if (!balloons[n].isPierced)
-		{
-			const auto balloon_hitbox = balloons[n].GetHitbox();
-			for (int i = 0; i < archer.arrows.size(); i++)
-			{	
-				if (archer.arrows[i].GetHitbox().IsOverlappingWith(balloon_hitbox) && balloons[n].portal.FullyOpened)
+			if (balloons[n].isOutOfScreen)
+			{
+				balloons.erase(balloons.begin() + n);
+			}
+			if (!balloons[n].isPierced)
+			{
+				const auto balloon_hitbox = balloons[n].GetHitbox();
+				for (int i = 0; i < archer.arrows.size(); i++)
 				{
+					if (archer.arrows[i].GetHitbox().IsOverlappingWith(balloon_hitbox) && balloons[n].portal.FullyOpened)
+					{
 						soundPop.Play();
 						balloons[n].isPierced = true;
 						score++;
+					}
 				}
 			}
+			if (!paused)
+				balloons[n].Update(dt);
 		}
-	}
-	for (int n = 0; n < bombs.size(); n++)
-	{
-		if (bombs[n].leftTheScreen)
+		for (int n = 0; n < bombs.size(); n++)
 		{
-			bombs.erase(bombs.begin() + n);
-		}
-		if (!bombs[n].isHit)
-		{
-			const auto bomb_hitbox = bombs[n].GetHitbox();
-			for (auto& arrow : archer.arrows)
+			if (bombs[n].leftTheScreen)
 			{
-				if (arrow.GetHitbox().IsOverlappingWith(bomb_hitbox))
+				bombs.erase(bombs.begin() + n);
+			}
+			if (!bombs[n].isHit)
+			{
+				const auto bomb_hitbox = bombs[n].GetHitbox();
+				for (auto& arrow : archer.arrows)
 				{
-					soundExplosion.Play();
-					bombs[n].isHit = true;
+					if (arrow.GetHitbox().IsOverlappingWith(bomb_hitbox))
+					{
+						
+						bombs[n].isHit = true;
+						hearts--;
+						if (!(hearts <= 0))
+						{
+							soundExplosion.Play();
+							arrow.exploded = true;
+						}
+						else
+						{
+							if (bombs[n].isHit)
+							{
+								paused = true;
+								music.StopAll();
+								soundPause.Play();
+							}
+						}
+					}
+					auto new_end = std::remove_if(archer.arrows.begin(), archer.arrows.end(), [](Archer::Arrow & arrow) {
+						return arrow.exploded;
+						});
+					archer.arrows.erase(new_end, archer.arrows.end());
+
 				}
 			}
+			if (!paused)
+				bombs[n].Update(dt);
 		}
+
+		archer.SetDirection();
+		archer.ClampToRect(RectI{ 335,465, 195, 355 });
+		if (!paused)
+			archer.Update(dt, wnd.mouse);
 	}
-
-	archer.SetDirection();
-	archer.ClampToRect(RectI{335,465, 195, 355});
-	archer.Update(dt, wnd.mouse);
-
-	for (int i = 0; i < bombs.size(); i++)
+	else if (!gameIsStarted && !gameIsOver)
 	{
-		if (bombs[i].leftTheScreen) 
+
+		if (wnd.kbd.KeyIsPressed(VK_RETURN))
 		{
-			bombs.erase(bombs.begin() + i);
+			startMusic.StopAll();
+			gameIsStarted = true;
+			music.Play(0.85f,0.3f);
 		}
-   		bombs[i].Update(dt);
 	}
-	for (int i = 0; i< balloons.size(); i++)
+	else if (gameIsOver)
 	{
-		balloons[i].Update(dt);
+
+		if (wnd.kbd.KeyIsPressed(VK_RETURN))
+		{
+			gameOverMusic.StopAll();
+			archer.arrows.erase(archer.arrows.begin(), archer.arrows.end());
+			balloons.erase(balloons.begin(), balloons.end());
+			bombs.erase(bombs.begin(), bombs.end());
+
+			counter = 0;
+			score = 0;
+			archer.pos = { 367.0f,250.0f };
+			balloonSpawnCounter = 0.0f;
+			balloonSpawnDelay = 0.384f;
+			bombSpawnCounter = 0.0f;
+
+			music.Play(0.85f, 0.3f);
+
+			gameIsOver = false;
+		}
 	}
-	
 }
 
 void Game::ComposeFrame()
 {
-	gfx.DrawSprite(0, 0, bckgrnd, SpriteEffect::Copy{});
-	gfx.DrawSprite(306, 550, scoreBar, SpriteEffect::Chroma{Colors::Magenta});
-	font.DrawText("Score:",Vei2(320,563),Colors::White,gfx);
-	font.DrawText(std::to_string(score), Vei2(370, 563), Colors::White, gfx);
+	if (gameIsStarted)
+	{
+		if (!gameIsOver)
+		{
+			gfx.DrawSprite(0, 0, bckgrnd, SpriteEffect::Copy{});
 
-	
-	for (auto& bomb:bombs)
-	{
-		bomb.Draw(gfx);
-	} 
-	for (auto& balloon:balloons)
-	{
-		if(balloon.hasPortal)
-		balloon.portal.Draw(gfx);
+			for (auto& bomb : bombs)
+			{
+				bomb.Draw(gfx);
+			}
+			for (auto& balloon : balloons)
+			{
+				if (balloon.hasPortal)
+					balloon.portal.Draw(gfx);
+			}
+			archer.Draw(gfx);
+
+			gfx.DrawSprite(306, 550, scoreBar, SpriteEffect::Chroma{ Colors::Magenta });
+			font.DrawText("Score:", Vei2(320, 563), Colors::White, gfx);
+			font.DrawText(std::to_string(score), Vei2(370, 563), Colors::White, gfx);
+
+			if (hearts == 3)
+			{
+				gfx.DrawSprite(468, 564, heart, SpriteEffect::Chroma{ Colors::Magenta });
+				gfx.DrawSprite(453, 564, heart, SpriteEffect::Chroma{ Colors::Magenta });
+				gfx.DrawSprite(438, 564, heart, SpriteEffect::Chroma{ Colors::Magenta });
+			}
+			if (hearts == 2)
+			{
+				gfx.DrawSprite(468, 564, heart, SpriteEffect::Chroma{ Colors::Magenta });
+				gfx.DrawSprite(453, 564, heart, SpriteEffect::Chroma{ Colors::Magenta });
+			}
+			if (hearts == 1)
+			{
+				gfx.DrawSprite(468, 564, heart, SpriteEffect::Chroma{ Colors::Magenta });
+			}
+
+			for (auto& balloon : balloons)
+			{
+				balloon.Draw(gfx);
+			}
+			gfx.DrawSprite(wnd.mouse.GetPosX() - 14, wnd.mouse.GetPosY() - 14, rtcl, SpriteEffect::Chroma{ Color{255,0,255} });
+		}
+		else
+		{
+			gfx.DrawSprite(0, 0, gameOverScreen, SpriteEffect::Copy{});
+		}
 	}
-	archer.Draw(gfx);
-	for (auto& balloon : balloons)
+	else
 	{
-		balloon.Draw(gfx);
+		gfx.DrawSprite(0, 0, startScreen, SpriteEffect::Copy{});
 	}
-
-	
-	gfx.DrawSprite(wnd.mouse.GetPosX() - 14, wnd.mouse.GetPosY() - 14, rtcl, SpriteEffect::Chroma{ Color{255,0,255} });
-
 	
 
 }

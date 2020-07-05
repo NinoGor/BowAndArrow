@@ -48,6 +48,7 @@ public:
 		float speed = 350.0f;
 		Vec2 dir = { 0.0f,1.0f };
 		Color chroma = Colors::Magenta;
+		bool exploded=false;
 	};
 public:
 	Archer(const Vec2& pos);
@@ -70,10 +71,10 @@ public:
 	Vec2 AimDir = { 0.0f,1.0f };
 	std::vector<Arrow> arrows;
 	bool AnimIsReset = false;
+	Vec2 pos;
 
 private:
 	Surface sprite;
-	Vec2 pos;
 	Vec2 vel = { 0.0f,0.0f };
 	std::vector<Animation> animations;
 	Arrow arr1;

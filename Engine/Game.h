@@ -59,15 +59,25 @@ private:
 	std::uniform_int_distribution<int> xDist2;
 	std::uniform_int_distribution<int> x1v2;
 
+	bool gameIsStarted = false;
+	bool gameIsOver = false;
 
 	int counter = 0;
+	int hearts = 3;
 	int score = 0;
+	bool paused = false;
+
+	float pauseTime = 0.0f;
+	float pauseDuration = 4.0f;
+
 	Surface bckgrnd = "Images\\Background.bmp";
+	Surface startScreen = "Images\\StartScreen.bmp";
+	Surface gameOverScreen = "Images\\GameOverScreen.bmp";
 	Surface rtcl = "Images\\Reticle.bmp";
 	Surface scoreBar = "Images\\ScoreBar188x39.bmp";
+	Surface heart = "Images\\Heart12x13.bmp";
 	FrameTimer ft;
-	FrameTimer b;
-	Archer archer = Archer({350.0f,250.0f});
+	Archer archer = Archer({367.0f,250.0f});
 
 	Balloon b1 = Balloon({0.0f,0.0f}, 0.0f);
 	int numOfBalloons = 16;
@@ -81,7 +91,11 @@ private:
 	float bombSpawnDelay = 10.0f;
 
 	Font font = "Images\\Font.bmp";
+
+	Sound startMusic = Sound(L"Sounds\\startScreen.wav", Sound::LoopType::AutoFullSound);
 	Sound music = Sound(L"Sounds\\Music.wav", Sound::LoopType::AutoFullSound);
+	Sound gameOverMusic = Sound(L"Sounds\\GameOver.wav");
+	Sound soundPause = Sound(L"Sounds\\Pause.wav");
 	Sound soundPop = Sound( L"Sounds\\BalloonPop.wav");
 	Sound soundExplosion = Sound(L"Sounds\\Explosion.wav");
 	
